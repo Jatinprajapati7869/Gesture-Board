@@ -51,7 +51,6 @@ export const useGestureStore = create<GestureState>((set) => ({
       
       // Dynamic Swipe Detection (Simple heuristic)
       // If we see an open_palm move significantly across the X axis in a short time
-      let finalGesture = gesture;
       
       if (gesture.type === 'open_palm' && state.trackingResult && state.trackingResult.landmarks) {
         // We can examine tracking result history if we stored it, but for a simple swipe:

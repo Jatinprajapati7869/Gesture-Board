@@ -1,4 +1,4 @@
-import type { HandLandmark, GestureType, GestureResult } from '@/types';
+import type { HandLandmark, GestureResult } from '@/types';
 
 // Constants for gesture geometry
 const FINGERTIPS = [8, 12, 16, 20]; // Index, Middle, Ring, Pinky

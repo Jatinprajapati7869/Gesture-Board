@@ -29,7 +29,7 @@ export function GesturesPage() {
               <div>
                 <p className="text-xs font-medium text-[var(--gb-text-tertiary)] uppercase tracking-wider mb-2">Current Gesture</p>
                 <div className="flex items-center gap-3">
-                  <Badge size="lg" variant={currentGesture.type !== 'none' ? 'brand' : 'default'} className="capitalize text-base px-4 py-1">
+                  <Badge size="md" variant={currentGesture.type !== 'none' ? 'brand' : 'default'} className="capitalize text-base px-4 py-1">
                     {currentGesture.type.replace('_', ' ')}
                   </Badge>
                   {currentGesture.type !== 'none' && (
