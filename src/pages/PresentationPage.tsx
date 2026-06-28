@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect, type ChangeEvent } from 'react';
-import { PDFViewer, useGestureIntegration } from '@/features/presentation';
+import { PDFViewer, AnnotationCanvas, useGestureIntegration } from '@/features/presentation';
 import { WebcamPreview } from '@/features/hand-tracking';
 import { usePresentationStore } from '@/stores/usePresentationStore';
 import { useGestureStore } from '@/stores/useGestureStore';
+import { useAnnotationStore } from '@/stores/useAnnotationStore';
 import { Card, Button, Badge } from '@/components/ui';
 import { Upload, ChevronLeft, ChevronRight, Maximize2, Presentation as PresentationIcon } from 'lucide-react';
 
 export function PresentationPage() {
   useGestureIntegration();
   const { currentGesture } = useGestureStore();
+  const { tool, setTool, clearPage } = useAnnotationStore();
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -107,8 +109,9 @@ export function PresentationPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-0">
           {/* Main Slide Area */}
           <div className="lg:col-span-3 flex flex-col gap-4 min-h-0">
-            <Card padding="none" className="flex-1 p-2 bg-[var(--gb-bg-secondary)] overflow-hidden">
-              <PDFViewer fileUrl={fileUrl} className="w-full h-full object-contain" />
+            <Card padding="none" className="flex-1 p-2 bg-[var(--gb-bg-secondary)] overflow-hidden relative">
+              <PDFViewer fileUrl={fileUrl} className="w-full h-full object-contain relative z-0" />
+              <AnnotationCanvas className="z-10" />
             </Card>
             
             {/* Slide Navigation Controls */}
@@ -152,19 +155,45 @@ export function PresentationPage() {
               </div>
             </Card>
 
+            <Card title="Annotation Tools" padding="md">
+              <div className="flex gap-2">
+                <Button 
+                  variant={tool === 'pointer' ? 'primary' : 'secondary'} 
+                  className="flex-1"
+                  onClick={() => setTool('pointer')}
+                >
+                  Laser
+                </Button>
+                <Button 
+                  variant={tool === 'pen' ? 'primary' : 'secondary'} 
+                  className="flex-1"
+                  onClick={() => setTool('pen')}
+                >
+                  Pen
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  className="flex-1"
+                  onClick={() => clearPage(currentPage)}
+                >
+                  Clear
+                </Button>
+              </div>
+            </Card>
+
             <Card title="Gesture Controls" padding="md">
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--gb-bg-secondary)] border border-[var(--gb-border)]">
                   <span className="text-sm font-medium text-[var(--gb-text-primary)]">Next Slide</span>
-                  <Badge variant="brand">Swipe Right</Badge>
+                  <Badge variant="brand">Peace</Badge>
                 </div>
                 <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--gb-bg-secondary)] border border-[var(--gb-border)]">
                   <span className="text-sm font-medium text-[var(--gb-text-primary)]">Prev Slide</span>
-                  <Badge variant="brand">Swipe Left</Badge>
+                  <Badge variant="brand">Open Palm</Badge>
                 </div>
                 <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--gb-bg-secondary)] border border-[var(--gb-border)]">
-                  <span className="text-sm font-medium text-[var(--gb-text-primary)]">Laser Pointer</span>
-                  <Badge variant="brand">Point</Badge>
+                  <span className="text-sm font-medium text-[var(--gb-text-primary)]">Draw/Laser</span>
+                  <Badge variant="brand">Pinch / Point</Badge>
                 </div>
               </div>
             </Card>
