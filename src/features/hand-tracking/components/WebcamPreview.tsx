@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useWebcam } from '../hooks/useWebcam';
 import { useHandTracking } from '../hooks/useHandTracking';
 import { useGestureStore } from '@/stores/useGestureStore';
+import { useSettingsStore } from '@/stores/useSettingsStore';
 import { cn } from '@/lib/cn';
 import { Button } from '@/components/ui';
 import { Camera, CameraOff } from 'lucide-react';
@@ -11,6 +12,7 @@ interface WebcamPreviewProps {
 }
 
 export function WebcamPreview({ className }: WebcamPreviewProps) {
+  const { mirrorCamera } = useSettingsStore();
   const { videoRef, stream, error, isInitializing, startCamera, stopCamera } = useWebcam({
     width: 640,
     height: 480,
@@ -118,13 +120,13 @@ export function WebcamPreview({ className }: WebcamPreviewProps) {
             autoPlay
             playsInline
             muted
-            className="absolute inset-0 w-full h-full object-cover -scale-x-100"
+            className={cn("absolute inset-0 w-full h-full object-cover", mirrorCamera ? "-scale-x-100" : "")}
           />
           <canvas
             ref={canvasRef}
             width={640}
             height={480}
-            className="absolute inset-0 w-full h-full object-cover -scale-x-100 pointer-events-none"
+            className={cn("absolute inset-0 w-full h-full object-cover pointer-events-none", mirrorCamera ? "-scale-x-100" : "")}
           />
           
           <div className="absolute top-3 right-3 flex gap-2">

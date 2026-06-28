@@ -2,13 +2,15 @@ import { useEffect, useRef } from 'react';
 import { useGestureStore } from '@/stores/useGestureStore';
 import { usePresentationStore } from '@/stores/usePresentationStore';
 import { useAnnotationStore } from '@/stores/useAnnotationStore';
+import { useSettingsStore } from '@/stores/useSettingsStore';
 
-const COOLDOWN_MS = 1500; // 1.5 second cooldown between slide changes
+
 
 export function useGestureIntegration() {
   const lastActionTime = useRef<number>(0);
   const { currentGesture, trackingResult } = useGestureStore();
   const { nextPage, prevPage, currentPage } = usePresentationStore();
+  const { presentationCooldownMs, mirrorCamera } = useSettingsStore();
   const { 
     setCursorPosition, 
     startStroke, 
@@ -31,8 +33,8 @@ export function useGestureIntegration() {
     // Get the index finger tip (landmark 8)
     const indexTip = trackingResult.landmarks[8];
     
-    // Mirror X coordinate because the camera feed is mirrored
-    const point = { x: 1 - indexTip.x, y: indexTip.y };
+    // Mirror X coordinate if the camera feed is mirrored
+    const point = { x: mirrorCamera ? 1 - indexTip.x : indexTip.x, y: indexTip.y };
     setCursorPosition(point);
 
     if (currentGesture.type === 'pinch') {
@@ -55,7 +57,7 @@ export function useGestureIntegration() {
     }
 
     const now = performance.now();
-    if (now - lastActionTime.current < COOLDOWN_MS) {
+    if (now - lastActionTime.current < presentationCooldownMs) {
       return; // Still in cooldown
     }
 

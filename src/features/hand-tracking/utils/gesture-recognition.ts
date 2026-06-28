@@ -1,4 +1,5 @@
 import type { HandLandmark, GestureResult } from '@/types';
+import { useSettingsStore } from '@/stores/useSettingsStore';
 
 // Constants for gesture geometry
 const FINGERTIPS = [8, 12, 16, 20]; // Index, Middle, Ring, Pinky
@@ -96,7 +97,13 @@ export function recognizeGesture(landmarks: HandLandmark[]): GestureResult {
   const thumbIndexDist = getDistance(landmarks[THUMB_TIP], landmarks[FINGERTIPS[0]]);
   // Normalize threshold based on hand size (distance from wrist to middle MCP)
   const handSize = getDistance(landmarks[WRIST], landmarks[9]); 
-  if (thumbIndexDist < handSize * 0.3) {
+  
+  const { gestureSensitivity } = useSettingsStore.getState();
+  let pinchThreshold = 0.3;
+  if (gestureSensitivity === 'low') pinchThreshold = 0.2;
+  if (gestureSensitivity === 'high') pinchThreshold = 0.4;
+  
+  if (thumbIndexDist < handSize * pinchThreshold) {
     return { type: 'pinch', confidence: 0.85, timestamp: performance.now() };
   }
 

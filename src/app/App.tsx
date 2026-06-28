@@ -5,6 +5,7 @@ import { PlaceholderPage } from '@/pages/PlaceholderPage';
 import type { NavPage } from '@/components/layout/AppLayout';
 import { GesturesPage } from '@/pages/GesturesPage';
 import { PresentationPage } from '@/pages/PresentationPage';
+import { SettingsPage } from '@/pages/SettingsPage';
 
 /**
  * Root App component.
@@ -29,24 +30,16 @@ function PageRouter({ page }: { page: NavPage }) {
       return <PresentationPage />;
     case 'gestures':
       return <GesturesPage />;
-    case 'canvas':
-      return (
-        <PlaceholderPage
-          title="Canvas & Annotations"
-          description="Draw on slides in real-time using hand gestures. Laser pointer, freeform drawing, and annotation persistence."
-          milestone="Milestone 6"
-        />
-      );
     case 'settings':
+      return <SettingsPage />;
+    default:
       return (
         <PlaceholderPage
-          title="Settings"
-          description="Customize gesture mappings, adjust sensitivity, configure webcam, and manage presentation preferences."
-          milestone="Milestone 7"
+          title="Page Not Found"
+          description="The requested page could not be found."
+          milestone="404"
         />
       );
-    default:
-      return <HomePage onNavigate={() => {}} />;
   }
 }
 
