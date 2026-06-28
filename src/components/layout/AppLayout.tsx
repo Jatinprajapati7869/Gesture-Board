@@ -2,8 +2,9 @@ import { type ReactNode, useState, useCallback, useEffect } from 'react';
 import { Sidebar, type NavPage } from './Sidebar';
 import { StatusBar } from './StatusBar';
 
+
 interface AppLayoutProps {
-  children: (currentPage: NavPage) => ReactNode;
+  children: (currentPage: NavPage, navigate: (page: NavPage) => void) => ReactNode;
 }
 
 /**
@@ -11,7 +12,7 @@ interface AppLayoutProps {
  * Manages the sidebar, main content area, and status bar.
  * Handles keyboard navigation (1-5 for page switching).
  */
-function AppLayout({ children }: AppLayoutProps) {
+export function AppLayout({ children }: AppLayoutProps) {
   const [currentPage, setCurrentPage] = useState<NavPage>('home');
 
   const handleNavigate = useCallback((page: NavPage) => {
@@ -55,7 +56,7 @@ function AppLayout({ children }: AppLayoutProps) {
       {/* Main area */}
       <div className="flex flex-col flex-1 min-w-0">
         {/* Content */}
-        <main className="flex-1 overflow-y-auto">{children(currentPage)}</main>
+        <main className="flex-1 overflow-y-auto">{children(currentPage, handleNavigate)}</main>
 
         {/* Status bar */}
         <StatusBar />
@@ -64,5 +65,3 @@ function AppLayout({ children }: AppLayoutProps) {
   );
 }
 
-export { AppLayout };
-export type { NavPage };

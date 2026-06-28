@@ -2,10 +2,11 @@ import { AppProviders } from '@/app/AppProviders';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { HomePage } from '@/pages/HomePage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
-import type { NavPage } from '@/components/layout/AppLayout';
+import type { NavPage } from '@/components/layout/Sidebar';
 import { GesturesPage } from '@/pages/GesturesPage';
 import { PresentationPage } from '@/pages/PresentationPage';
 import { SettingsPage } from '@/pages/SettingsPage';
+import { OnboardingPage } from '@/pages/OnboardingPage';
 
 /**
  * Root App component.
@@ -16,16 +17,18 @@ function App() {
   return (
     <AppProviders>
       <AppLayout>
-        {(currentPage: NavPage) => <PageRouter page={currentPage} />}
+        {(currentPage: NavPage, navigate) => <PageRouter page={currentPage} navigate={navigate} />}
       </AppLayout>
     </AppProviders>
   );
 }
 
-function PageRouter({ page }: { page: NavPage }) {
+function PageRouter({ page, navigate }: { page: NavPage, navigate: (page: NavPage) => void }) {
   switch (page) {
     case 'home':
-      return <HomePage onNavigate={() => {}} />;
+      return <HomePage onNavigate={navigate} />;
+    case 'onboarding':
+      return <OnboardingPage onComplete={() => navigate('present')} />;
     case 'present':
       return <PresentationPage />;
     case 'gestures':

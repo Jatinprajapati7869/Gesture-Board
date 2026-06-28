@@ -15,7 +15,7 @@ import { Tooltip, Kbd } from '@/components/ui';
 import { useTheme } from '@/hooks/useTheme';
 import { APP } from '@/lib/constants';
 
-type NavPage = 'home' | 'present' | 'gestures' | 'canvas' | 'settings';
+export type NavPage = 'home' | 'present' | 'gestures' | 'canvas' | 'settings' | 'onboarding';
 
 interface SidebarProps {
   currentPage: NavPage;
@@ -168,4 +168,4 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
   );
 }
 
-export { Sidebar, type SidebarProps, type NavPage };
+export { Sidebar, type SidebarProps };

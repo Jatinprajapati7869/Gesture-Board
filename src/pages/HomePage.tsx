@@ -16,7 +16,7 @@ import { Card, Button, Badge } from '@/components/ui';
 import { cn } from '@/lib/cn';
 
 interface HomePageProps {
-  onNavigate: (page: 'present') => void;
+  onNavigate: (page: 'onboarding') => void;
 }
 
 const features = [
@@ -115,7 +115,7 @@ function HomePage({ onNavigate }: HomePageProps) {
               <Button
                 size="lg"
                 icon={<Sparkles />}
-                onClick={() => onNavigate('present')}
+                onClick={() => onNavigate('onboarding')}
               >
                 Start Presenting
               </Button>
@@ -236,7 +236,7 @@ function HomePage({ onNavigate }: HomePageProps) {
             Upload a PDF, enable your webcam, and start controlling your
             presentation with hand gestures.
           </p>
-          <Button icon={<ArrowRight />} onClick={() => onNavigate('present')}>
+          <Button icon={<ArrowRight />} onClick={() => onNavigate('onboarding')}>
             Open Presenter
           </Button>
         </Card>
