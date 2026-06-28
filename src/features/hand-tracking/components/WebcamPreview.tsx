@@ -21,15 +21,9 @@ export function WebcamPreview({ className }: WebcamPreviewProps) {
   const { startTracking, stopTracking } = useHandTracking(videoRef);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
-  // Start tracking automatically when stream is available
-  useEffect(() => {
-    if (stream) {
-      startTracking();
-    } else {
-      stopTracking();
-    }
-    return () => stopTracking();
-  }, [stream, startTracking, stopTracking]);
+  // We explicitly removed the useEffect that auto-calls startTracking() 
+  // when `stream` becomes truthy to prevent an infinite update loop if 
+  // the MediaPipe initialization constantly crashes (e.g. due to GPU errors).
 
   // Handle canvas drawing outside of React render cycle for performance
   useEffect(() => {
@@ -103,13 +97,28 @@ export function WebcamPreview({ className }: WebcamPreviewProps) {
         <div className="text-center p-4 text-error-500 flex flex-col items-center gap-2">
           <CameraOff className="h-8 w-8 mb-2" />
           <p className="text-sm font-medium">{error.message}</p>
-          <Button variant="secondary" size="sm" onClick={startCamera} className="mt-2">
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            onClick={async () => {
+              await startCamera();
+              startTracking();
+            }} 
+            className="mt-2"
+          >
             Retry
           </Button>
         </div>
       ) : !stream ? (
         <div className="text-center p-4">
-          <Button onClick={startCamera} loading={isInitializing} icon={<Camera />}>
+          <Button 
+            onClick={async () => {
+              await startCamera();
+              startTracking();
+            }} 
+            loading={isInitializing} 
+            icon={<Camera />}
+          >
             Enable Camera
           </Button>
         </div>
@@ -133,7 +142,10 @@ export function WebcamPreview({ className }: WebcamPreviewProps) {
             <Button
               variant="ghost"
               size="icon"
-              onClick={stopCamera}
+              onClick={() => {
+                stopCamera();
+                stopTracking();
+              }}
               className="bg-black/50 text-white hover:bg-black/70 hover:text-error-400 backdrop-blur-md rounded-full h-8 w-8"
               aria-label="Turn off camera"
             >

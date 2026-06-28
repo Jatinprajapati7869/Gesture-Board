@@ -18,7 +18,7 @@ class HandLandmarkerService {
         this.handLandmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
             modelAssetPath: '/models/hand_landmarker.task',
-            delegate: 'GPU',
+            delegate: 'CPU',
           },
           runningMode: 'VIDEO',
           numHands: HAND_TRACKING.MAX_HANDS,
