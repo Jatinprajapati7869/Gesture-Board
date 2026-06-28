@@ -1,245 +1,149 @@
-import {
-  Hand,
-  Presentation,
-  Pencil,
-  ZoomIn,
-  Pointer,
-  MonitorPlay,
-  ArrowRight,
-  Sparkles,
-  Code2,
-  Zap,
-  Shield,
-  Cpu,
-} from 'lucide-react';
-import { Card, Button, Badge } from '@/components/ui';
-import { cn } from '@/lib/cn';
+import { ArrowRight, Code2 } from 'lucide-react';
+import { Button } from '@/components/ui';
 
 interface HomePageProps {
   onNavigate: (page: 'onboarding') => void;
 }
 
-const features = [
+const GESTURES = [
   {
-    icon: Hand,
-    title: 'Hand Tracking',
-    description: '21-point hand landmark detection in real-time using MediaPipe AI',
-    color: 'text-brand-400',
-    bgColor: 'bg-brand-500/10',
+    gesture: '👋',
+    name: 'Wave',
+    action: 'Navigate slides',
+    detail: 'Swipe left or right to move between slides without touching anything.',
   },
   {
-    icon: Pointer,
-    title: 'Laser Pointer',
-    description: 'Point at your screen with a virtual laser that follows your finger',
-    color: 'text-error-500',
-    bgColor: 'bg-error-500/10',
+    gesture: '👆',
+    name: 'Point',
+    action: 'Laser pointer',
+    detail: 'Raise your index finger and a red dot follows it on screen.',
   },
   {
-    icon: ZoomIn,
-    title: 'Pinch to Zoom',
-    description: 'Pinch gesture to zoom into slide content naturally',
-    color: 'text-accent-500',
-    bgColor: 'bg-accent-500/10',
+    gesture: '🤏',
+    name: 'Pinch',
+    action: 'Zoom in',
+    detail: 'Pinch your thumb and index finger to magnify any part of a slide.',
   },
   {
-    icon: Pencil,
-    title: 'Air Drawing',
-    description: 'Draw annotations on slides using hand gestures in mid-air',
-    color: 'text-warning-500',
-    bgColor: 'bg-warning-500/10',
+    gesture: '✌️',
+    name: 'Draw',
+    action: 'Annotate live',
+    detail: 'Hold two fingers up and draw directly on your slide in mid-air.',
   },
   {
-    icon: Presentation,
-    title: 'PDF Presentations',
-    description: 'Upload any PDF and control it entirely with hand gestures',
-    color: 'text-success-500',
-    bgColor: 'bg-success-500/10',
+    gesture: '✊',
+    name: 'Fist',
+    action: 'Pause tracking',
+    detail: 'Close your fist to freeze the cursor. Open it to resume.',
   },
-  {
-    icon: MonitorPlay,
-    title: 'Presenter View',
-    description: 'Professional presenter mode with slide preview and timer',
-    color: 'text-brand-300',
-    bgColor: 'bg-brand-300/10',
-  },
-];
+] as const;
 
-const stats = [
-  { icon: Zap, value: '30-60', label: 'FPS Tracking', description: 'Real-time performance' },
-  { icon: Cpu, value: '<100', label: 'ms Latency', description: 'Instant response' },
-  { icon: Shield, value: '100%', label: 'Client-side', description: 'Privacy first' },
-];
+const STATS = [
+  { value: '30–60', unit: 'fps', label: 'tracking speed' },
+  { value: '<100', unit: 'ms', label: 'gesture latency' },
+  { value: '100%', unit: '', label: 'client-side' },
+] as const;
 
-/**
- * Landing/Home page.
- * Designed to immediately impress — combines hero section,
- * feature grid, and performance stats.
- */
 function HomePage({ onNavigate }: HomePageProps) {
   return (
     <div className="min-h-full">
-      {/* ── Hero Section ── */}
-      <section className="relative overflow-hidden">
-        {/* Gradient background orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-brand-500/8 blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-accent-400/8 blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-brand-400/4 blur-3xl" />
+      {/* ── Hero ── */}
+      <section className="max-w-3xl mx-auto px-6 pt-20 pb-16 text-center">
+        <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[var(--gb-text-primary)]">
+          Control slides with your hands
+        </h1>
+
+        <p className="mt-6 max-w-xl mx-auto text-lg text-[var(--gb-text-secondary)] leading-relaxed">
+          Step back from the laptop. Swipe through slides, draw annotations, and
+          point at content — all with hand gestures your webcam picks up in
+          real time. Nothing to install, nothing to pair.
+        </p>
+
+        <div className="flex items-center justify-center gap-3 mt-8">
+          <Button size="lg" onClick={() => onNavigate('onboarding')}>
+            Start presenting
+          </Button>
+          <Button
+            variant="secondary"
+            size="lg"
+            icon={<Code2 />}
+            onClick={() =>
+              window.open('https://github.com', '_blank')
+            }
+          >
+            Source
+          </Button>
         </div>
+      </section>
 
-        <div className="relative max-w-5xl mx-auto px-6 pt-16 pb-20">
-          {/* Version badge */}
-          <div className="flex justify-center mb-8 animate-fade-in">
-            <Badge variant="brand" dot>
-              v0.1.0 — Early Preview
-            </Badge>
-          </div>
+      {/* ── Gesture reference ── */}
+      <section className="border-y border-[var(--gb-border)] bg-[var(--gb-bg-secondary)]">
+        <div className="max-w-3xl mx-auto px-6 py-12">
+          <h2 className="font-display text-2xl font-bold text-[var(--gb-text-primary)] mb-8">
+            Five gestures, zero hardware
+          </h2>
 
-          {/* Headline */}
-          <div className="text-center space-y-6 animate-slide-up">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[var(--gb-text-primary)]">
-              Control slides with{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-brand-500 to-accent-400">
-                your hands
-              </span>
-            </h1>
-
-            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-[var(--gb-text-secondary)] leading-relaxed">
-              AI-powered hand gesture recognition for presentations.
-              Navigate, annotate, zoom, and point — no mouse, keyboard, or
-              clicker required.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex items-center justify-center gap-4 pt-4">
-              <Button
-                size="lg"
-                icon={<Sparkles />}
-                onClick={() => onNavigate('onboarding')}
+          <div className="flex flex-col gap-6">
+            {GESTURES.map(({ gesture, name, action, detail }) => (
+              <div
+                key={name}
+                className="flex items-start gap-4"
               >
-                Start Presenting
-              </Button>
-              <Button
-                variant="secondary"
-                size="lg"
-                icon={<Code2 />}
-                onClick={() =>
-                  window.open('https://github.com', '_blank')
-                }
-              >
-                View Source
-              </Button>
-            </div>
-          </div>
-
-          {/* Gesture demo hint */}
-          <div className="mt-16 flex justify-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            <div className="inline-flex items-center gap-6 px-6 py-3 rounded-2xl bg-[var(--gb-bg-elevated)] border border-[var(--gb-border)] shadow-card">
-              {(['👋 Wave', '👆 Point', '🤏 Pinch', '✌️ Draw', '✊ Fist'] as const).map(
-                (gesture, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1.5">
-                    <span className="text-2xl" role="img">{gesture.split(' ')[0]}</span>
-                    <span className="text-[10px] font-medium text-[var(--gb-text-tertiary)]">
-                      {gesture.split(' ')[1]}
+                <span
+                  className="text-3xl leading-none mt-0.5 shrink-0"
+                  role="img"
+                  aria-label={name}
+                >
+                  {gesture}
+                </span>
+                <div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-sm font-semibold text-[var(--gb-text-primary)]">
+                      {name}
+                    </span>
+                    <span className="text-xs text-[var(--gb-text-tertiary)]">
+                      — {action}
                     </span>
                   </div>
-                ),
+                  <p className="mt-1 text-sm text-[var(--gb-text-secondary)] leading-relaxed">
+                    {detail}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Telemetry strip ── */}
+      <section className="border-b border-[var(--gb-border)]">
+        <div className="max-w-3xl mx-auto px-6 py-6 flex items-center justify-between sm:justify-start sm:gap-12">
+          {STATS.map(({ value, unit, label }) => (
+            <div key={label} className="flex items-baseline gap-1.5">
+              <span className="font-mono text-xl font-medium text-[var(--gb-text-primary)]">
+                {value}
+              </span>
+              {unit && (
+                <span className="font-mono text-xs text-[var(--gb-text-tertiary)]">
+                  {unit}
+                </span>
               )}
+              <span className="text-xs text-[var(--gb-text-tertiary)] ml-1">
+                {label}
+              </span>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ── Stats Section ── */}
-      <section className="border-y border-[var(--gb-border)] bg-[var(--gb-bg-secondary)]">
-        <div className="max-w-5xl mx-auto px-6 py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {stats.map((stat) => {
-              const Icon = stat.icon;
-              return (
-                <div key={stat.label} className="flex items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-500/10">
-                    <Icon className="h-5 w-5 text-brand-400" />
-                  </div>
-                  <div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-2xl font-bold text-[var(--gb-text-primary)] font-mono">
-                        {stat.value}
-                      </span>
-                      <span className="text-sm font-medium text-[var(--gb-text-secondary)]">
-                        {stat.label}
-                      </span>
-                    </div>
-                    <p className="text-xs text-[var(--gb-text-tertiary)]">{stat.description}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Features Grid ── */}
-      <section className="max-w-5xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[var(--gb-text-primary)]">
-            Everything you need to present
-          </h2>
-          <p className="mt-3 text-[var(--gb-text-secondary)] max-w-lg mx-auto">
-            Built with MediaPipe AI and optimized for real-time performance.
-            Every gesture is detected client-side — your camera feed never leaves your device.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {features.map((feature) => {
-            const Icon = feature.icon;
-            return (
-              <Card
-                key={feature.title}
-                variant="bordered"
-                padding="md"
-                hover
-                className="group"
-              >
-                <div
-                  className={cn(
-                    'inline-flex items-center justify-center w-10 h-10 rounded-xl mb-4',
-                    'transition-transform duration-200 group-hover:scale-110',
-                    feature.bgColor,
-                  )}
-                >
-                  <Icon className={cn('h-5 w-5', feature.color)} />
-                </div>
-                <h3 className="text-sm font-semibold text-[var(--gb-text-primary)] mb-1">
-                  {feature.title}
-                </h3>
-                <p className="text-xs text-[var(--gb-text-tertiary)] leading-relaxed">
-                  {feature.description}
-                </p>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── CTA Footer ── */}
-      <section className="max-w-5xl mx-auto px-6 pb-16">
-        <Card variant="elevated" padding="lg" className="text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Hand className="h-6 w-6 text-brand-500" />
-            <h3 className="text-xl font-bold text-[var(--gb-text-primary)]">
-              Ready to try it?
-            </h3>
-          </div>
-          <p className="text-sm text-[var(--gb-text-secondary)] mb-6 max-w-md mx-auto">
-            Upload a PDF, enable your webcam, and start controlling your
-            presentation with hand gestures.
-          </p>
-          <Button icon={<ArrowRight />} onClick={() => onNavigate('onboarding')}>
-            Open Presenter
-          </Button>
-        </Card>
+      {/* ── CTA ── */}
+      <section className="max-w-3xl mx-auto px-6 py-16 text-center">
+        <p className="text-lg text-[var(--gb-text-secondary)] mb-6">
+          Upload a PDF, turn on your webcam, and start.
+        </p>
+        <Button icon={<ArrowRight />} onClick={() => onNavigate('onboarding')}>
+          Open presenter
+        </Button>
       </section>
     </div>
   );
