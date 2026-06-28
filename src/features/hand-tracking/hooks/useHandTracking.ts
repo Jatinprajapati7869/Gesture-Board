@@ -38,15 +38,24 @@ export function useHandTracking(videoRef: React.RefObject<HTMLVideoElement | nul
         fpsCounter.current.tick();
         
         if (result && result.landmarks && result.landmarks.length > 0) {
+          const landmarks = result.landmarks[0];
           const trackingResult: HandTrackingResult = {
-            landmarks: result.landmarks[0],
+            landmarks,
             worldLandmarks: result.worldLandmarks[0],
             handedness: result.handednesses[0][0].categoryName === 'Left' ? 'Left' : 'Right',
             timestamp: performance.now(),
           };
           updateTrackingData(trackingResult, fpsCounter.current.fps, timer.current.elapsed());
+
+          // Recognize gesture
+          const { recognizeGesture } = await import('../utils/gesture-recognition');
+          const gesture = recognizeGesture(landmarks);
+          
+          // Only update if it's not 'none' or if it changed, simple debounce handled in store
+          useGestureStore.getState().setGesture(gesture);
         } else {
           updateTrackingData(null, fpsCounter.current.fps, timer.current.elapsed());
+          useGestureStore.getState().setGesture({ type: 'none', confidence: 0, timestamp: performance.now() });
         }
       }
       
