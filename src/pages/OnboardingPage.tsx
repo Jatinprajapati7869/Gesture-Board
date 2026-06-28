@@ -23,26 +23,37 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
   
   const isCameraActive = trackingResult !== null;
 
+  // 1. Listen for the correct gesture and mark step as complete
   useEffect(() => {
     if (!isCameraActive || currentStepIndex >= TUTORIAL_STEPS.length) return;
+    const currentStepId = TUTORIAL_STEPS[currentStepIndex].id;
+
+    if (completedSteps.has(currentStepId)) return;
 
     const currentRequiredGesture = TUTORIAL_STEPS[currentStepIndex].requiredGesture;
     
     if (currentGesture.type === currentRequiredGesture && currentGesture.confidence > 0.8) {
       setCompletedSteps(prev => {
         const newSet = new Set(prev);
-        newSet.add(TUTORIAL_STEPS[currentStepIndex].id);
+        newSet.add(currentStepId);
         return newSet;
       });
-      
-      // Move to next step after a short delay
+    }
+  }, [currentGesture.type, currentGesture.timestamp, isCameraActive, currentStepIndex, completedSteps]);
+
+  // 2. Once a step is marked complete, wait 1 second then advance
+  useEffect(() => {
+    if (currentStepIndex >= TUTORIAL_STEPS.length) return;
+    const currentStepId = TUTORIAL_STEPS[currentStepIndex].id;
+
+    if (completedSteps.has(currentStepId)) {
       const timer = setTimeout(() => {
         setCurrentStepIndex(prev => Math.min(prev + 1, TUTORIAL_STEPS.length));
       }, 1000);
       
       return () => clearTimeout(timer);
     }
-  }, [currentGesture, isCameraActive, currentStepIndex]);
+  }, [completedSteps, currentStepIndex]);
 
   const allCompleted = completedSteps.size === TUTORIAL_STEPS.length;
 

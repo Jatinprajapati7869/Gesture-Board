@@ -24,6 +24,23 @@ export function PDFViewer({ fileUrl, className }: PDFViewerProps) {
   const { currentPage, setPdfDocument, pdfDocument } = usePresentationStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Track container width for responsive PDF rendering
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    // We use a small debounce/throttle in ResizeObserver implicitly by React batching,
+    // but setting state directly is fine since it's just width.
+    const observer = new ResizeObserver((entries) => {
+      if (entries[0]) {
+        setContainerWidth(entries[0].contentRect.width);
+      }
+    });
+    
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   // Load PDF Document
   useEffect(() => {
@@ -129,7 +146,7 @@ export function PDFViewer({ fileUrl, className }: PDFViewerProps) {
       isMounted = false;
       renderTask?.cancel();
     };
-  }, [pdfDocument, currentPage]);
+  }, [pdfDocument, currentPage, containerWidth]);
 
   if (!fileUrl) {
     return (
