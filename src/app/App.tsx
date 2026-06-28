@@ -4,6 +4,7 @@ import { HomePage } from '@/pages/HomePage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
 import type { NavPage } from '@/components/layout/AppLayout';
 import { GesturesPage } from '@/pages/GesturesPage';
+import { PresentationPage } from '@/pages/PresentationPage';
 
 /**
  * Root App component.
@@ -25,13 +26,7 @@ function PageRouter({ page }: { page: NavPage }) {
     case 'home':
       return <HomePage onNavigate={() => {}} />;
     case 'present':
-      return (
-        <PlaceholderPage
-          title="Presentation Mode"
-          description="Upload PDFs and control them with hand gestures. Webcam integration, slide navigation, and real-time annotations."
-          milestone="Milestone 4"
-        />
-      );
+      return <PresentationPage />;
     case 'gestures':
       return <GesturesPage />;
     case 'canvas':
