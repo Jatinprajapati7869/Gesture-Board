@@ -5,11 +5,10 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 // Setup PDF.js worker
-if (typeof window !== 'undefined' && 'Worker' in window) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.mjs',
-    import.meta.url
-  ).toString();
+import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.mjs?url';
+
+if (typeof window !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 }
 
 interface PDFViewerProps {

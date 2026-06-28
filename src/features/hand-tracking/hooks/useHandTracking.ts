@@ -87,7 +87,7 @@ export function useHandTracking(videoRef: React.RefObject<HTMLVideoElement | nul
   }, [isTracking, processFrame, setTrackingState]);
 
   return {
-    startTracking: () => setTrackingState(true),
-    stopTracking: () => setTrackingState(false),
+    startTracking: useCallback(() => setTrackingState(true), [setTrackingState]),
+    stopTracking: useCallback(() => setTrackingState(false), [setTrackingState]),
   };
 }
