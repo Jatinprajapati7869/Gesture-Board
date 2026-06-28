@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect, type ChangeEvent } from 'react';
-import { PDFViewer } from '@/features/presentation';
+import { PDFViewer, useGestureIntegration } from '@/features/presentation';
+import { WebcamPreview } from '@/features/hand-tracking';
 import { usePresentationStore } from '@/stores/usePresentationStore';
+import { useGestureStore } from '@/stores/useGestureStore';
 import { Card, Button, Badge } from '@/components/ui';
 import { Upload, ChevronLeft, ChevronRight, Maximize2, Presentation as PresentationIcon } from 'lucide-react';
 
 export function PresentationPage() {
+  useGestureIntegration();
+  const { currentGesture } = useGestureStore();
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -131,14 +135,23 @@ export function PresentationPage() {
                 </Button>
               </div>
               
-              <Badge variant="default" dot>
-                Awaiting Gestures
+              <Badge variant={currentGesture.type !== 'none' ? 'brand' : 'default'} dot>
+                {currentGesture.type !== 'none' ? 'Gesture Detected' : 'Gestures Active'}
               </Badge>
             </div>
           </div>
 
           {/* Sidebar Area */}
           <div className="space-y-6 overflow-y-auto pr-2">
+            <Card padding="none" className="overflow-hidden bg-black aspect-video relative">
+              <WebcamPreview className="w-full h-full object-cover" />
+              <div className="absolute bottom-2 right-2">
+                <Badge variant={currentGesture.type !== 'none' ? 'brand' : 'default'} className="bg-black/80 backdrop-blur">
+                  {currentGesture.type.replace('_', ' ')}
+                </Badge>
+              </div>
+            </Card>
+
             <Card title="Gesture Controls" padding="md">
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--gb-bg-secondary)] border border-[var(--gb-border)]">
