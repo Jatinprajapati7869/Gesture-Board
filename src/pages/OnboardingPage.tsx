@@ -39,7 +39,7 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
         return newSet;
       });
     }
-  }, [currentGesture.type, currentGesture.timestamp, isCameraActive, currentStepIndex, completedSteps]);
+  }, [currentGesture.type, currentGesture.confidence, currentGesture.timestamp, isCameraActive, currentStepIndex, completedSteps]);
 
   // 2. Once a step is marked complete, wait 1 second then advance
   useEffect(() => {

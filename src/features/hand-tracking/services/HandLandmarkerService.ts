@@ -9,7 +9,7 @@ class HandLandmarkerService {
     if (this.handLandmarker) return;
     if (this.initPromise) return this.initPromise;
 
-    this.initPromise = new Promise(async (resolve, reject) => {
+    this.initPromise = (async () => {
       try {
         const vision = await FilesetResolver.forVisionTasks(
           'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm'
@@ -26,14 +26,11 @@ class HandLandmarkerService {
           minHandPresenceConfidence: HAND_TRACKING.MIN_TRACKING_CONFIDENCE,
           minTrackingConfidence: HAND_TRACKING.MIN_TRACKING_CONFIDENCE,
         });
-        resolve();
       } catch (error) {
         console.error('Failed to initialize HandLandmarker:', error);
-        reject(error);
-      } finally {
-        this.initPromise = null;
+        throw error;
       }
-    });
+    })();
 
     return this.initPromise;
   }

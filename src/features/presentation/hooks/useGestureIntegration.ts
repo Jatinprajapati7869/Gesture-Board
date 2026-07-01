@@ -48,7 +48,7 @@ export function useGestureIntegration() {
         endStroke(currentPage);
       }
     }
-  }, [trackingResult, currentGesture.type, currentPage, tool, isDrawing, setCursorPosition, startStroke, addPointToStroke, endStroke]);
+  }, [trackingResult, currentGesture.type, currentPage, tool, isDrawing, mirrorCamera, setCursorPosition, startStroke, addPointToStroke, endStroke]);
 
   // Handle slide navigation with cooldowns
   useEffect(() => {
@@ -81,5 +81,5 @@ export function useGestureIntegration() {
     if (actionTaken) {
       lastActionTime.current = now;
     }
-  }, [currentGesture, nextPage, prevPage]);
+  }, [currentGesture, nextPage, prevPage, presentationCooldownMs]);
 }

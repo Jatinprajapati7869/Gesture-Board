@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { handLandmarkerService } from '../services/HandLandmarkerService';
+import { recognizeGesture } from '../utils/gesture-recognition';
 import { useGestureStore } from '@/stores/useGestureStore';
 import { FPSCounter, FrameTimer } from '@/lib/performance';
 import type { HandTrackingResult } from '@/types';
@@ -48,7 +49,6 @@ export function useHandTracking(videoRef: React.RefObject<HTMLVideoElement | nul
           updateTrackingData(trackingResult, fpsCounter.current.fps, timer.current.elapsed());
 
           // Recognize gesture
-          const { recognizeGesture } = await import('../utils/gesture-recognition');
           const gesture = recognizeGesture(landmarks);
           
           // Only update if it's not 'none' or if it changed, simple debounce handled in store

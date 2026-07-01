@@ -1,14 +1,16 @@
 import { create } from 'zustand';
 import type { PresentationFile } from '@/types';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
 
 interface PresentationState {
   file: PresentationFile | null;
   currentPage: number;
-  pdfDocument: any | null; // We use any here to avoid tying the store tightly to pdfjs-dist types
+  pdfDocument: PDFDocumentProxy | null;
   
   // Actions
   setFile: (file: PresentationFile | null) => void;
-  setPdfDocument: (doc: any | null) => void;
+  setPdfDocument: (doc: PDFDocumentProxy | null) => void;
+  setTotalPages: (totalPages: number) => void;
   nextPage: () => void;
   prevPage: () => void;
   goToPage: (page: number) => void;
@@ -22,6 +24,13 @@ export const usePresentationStore = create<PresentationState>((set, get) => ({
   
   setFile: (file) => set({ file }),
   setPdfDocument: (pdfDocument) => set({ pdfDocument }),
+  
+  setTotalPages: (totalPages) => {
+    const { file } = get();
+    if (file) {
+      set({ file: { ...file, totalPages } });
+    }
+  },
   
   nextPage: () => {
     const { currentPage, file } = get();

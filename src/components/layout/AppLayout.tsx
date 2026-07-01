@@ -25,8 +25,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       '1': 'home',
       '2': 'present',
       '3': 'gestures',
-      '4': 'canvas',
-      '5': 'settings',
+      '4': 'settings',
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {

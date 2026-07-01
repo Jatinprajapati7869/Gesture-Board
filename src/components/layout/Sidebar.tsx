@@ -3,7 +3,6 @@ import {
   Hand,
   Presentation,
   Settings,
-  Layers,
   Gauge,
   PanelLeftClose,
   PanelLeftOpen,
@@ -33,8 +32,7 @@ const navItems: NavItem[] = [
   { id: 'home', label: 'Dashboard', icon: Gauge, shortcut: '1' },
   { id: 'present', label: 'Present', icon: Presentation, shortcut: '2' },
   { id: 'gestures', label: 'Gestures', icon: Hand, shortcut: '3' },
-  { id: 'canvas', label: 'Canvas', icon: Layers, shortcut: '4' },
-  { id: 'settings', label: 'Settings', icon: Settings, shortcut: '5' },
+  { id: 'settings', label: 'Settings', icon: Settings, shortcut: '4' },
 ];
 
 /**

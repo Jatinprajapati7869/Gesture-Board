@@ -9,12 +9,13 @@ interface UseWebcamOptions {
 export function useWebcam(options: UseWebcamOptions = {}) {
   const { width = 1280, height = 720, fps = 30 } = options;
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isInitializing, setIsInitializing] = useState(false);
 
   const startCamera = useCallback(async () => {
-    if (stream) return;
+    if (streamRef.current) return;
     setIsInitializing(true);
     setError(null);
 
@@ -29,6 +30,7 @@ export function useWebcam(options: UseWebcamOptions = {}) {
         audio: false,
       });
 
+      streamRef.current = mediaStream;
       setStream(mediaStream);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
@@ -38,23 +40,25 @@ export function useWebcam(options: UseWebcamOptions = {}) {
     } finally {
       setIsInitializing(false);
     }
-  }, [width, height, fps, stream]);
+  }, [width, height, fps]);
 
   const stopCamera = useCallback(() => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
       setStream(null);
       if (videoRef.current) {
         videoRef.current.srcObject = null;
       }
     }
-  }, [stream]);
+  }, []);
 
+  // Cleanup on unmount only
   useEffect(() => {
     return () => {
-      stopCamera();
+      streamRef.current?.getTracks().forEach((t) => t.stop());
     };
-  }, [stopCamera]);
+  }, []);
 
   return {
     videoRef,

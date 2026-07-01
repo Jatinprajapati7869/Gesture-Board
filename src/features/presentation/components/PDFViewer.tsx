@@ -115,6 +115,7 @@ export function PDFViewer({ fileUrl, className }: PDFViewerProps) {
 
         const renderContext = {
           canvasContext: ctx,
+          canvas: canvas,
           transform: transform || undefined,
           viewport: viewport
         };

@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useAnnotationStore } from '@/stores/useAnnotationStore';
 import { usePresentationStore } from '@/stores/usePresentationStore';
 import { cn } from '@/lib/cn';
+import { CANVAS } from '@/lib/constants';
+import type { Stroke } from '@/types';
 
 interface AnnotationCanvasProps {
   className?: string;
@@ -84,19 +86,19 @@ export function AnnotationCanvas({ className }: AnnotationCanvasProps) {
       if (tool === 'pointer') {
         // Laser pointer effect
         ctx.beginPath();
-        ctx.arc(x, y, 6 * dpr, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(239, 68, 68, 0.8)'; // Red
+        ctx.arc(x, y, CANVAS.POINTER_RADIUS * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.8)';
         ctx.fill();
         
         // Outer glow
         ctx.beginPath();
-        ctx.arc(x, y, 12 * dpr, 0, Math.PI * 2);
+        ctx.arc(x, y, CANVAS.POINTER_GLOW_RADIUS * dpr, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
         ctx.fill();
       } else if (tool === 'pen') {
         // Brush preview
         ctx.beginPath();
-        ctx.arc(x, y, (currentStroke?.width || 4) * dpr / 2, 0, Math.PI * 2);
+        ctx.arc(x, y, (currentStroke?.width || CANVAS.DEFAULT_PEN_WIDTH) * dpr / 2, 0, Math.PI * 2);
         ctx.fillStyle = activeColor;
         ctx.fill();
       }
@@ -109,7 +111,7 @@ export function AnnotationCanvas({ className }: AnnotationCanvasProps) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [strokes, currentStroke, cursorPosition, currentPage, tool, activeColor]);
 
-  const drawStroke = (ctx: CanvasRenderingContext2D, stroke: any, canvasWidth: number, canvasHeight: number) => {
+  const drawStroke = (ctx: CanvasRenderingContext2D, stroke: Stroke, canvasWidth: number, canvasHeight: number) => {
     if (stroke.points.length === 0) return;
     
     const dpr = window.devicePixelRatio || 1;
@@ -137,3 +139,4 @@ export function AnnotationCanvas({ className }: AnnotationCanvasProps) {
     </div>
   );
 }
+

@@ -4,6 +4,7 @@ import { WebcamPreview } from '@/features/hand-tracking';
 import { usePresentationStore } from '@/stores/usePresentationStore';
 import { useGestureStore } from '@/stores/useGestureStore';
 import { useAnnotationStore } from '@/stores/useAnnotationStore';
+import { PRESENTATION } from '@/lib/constants';
 import { Card, Button, Badge } from '@/components/ui';
 import { Upload, ChevronLeft, ChevronRight, Maximize2, Presentation as PresentationIcon } from 'lucide-react';
 
@@ -17,6 +18,7 @@ export function PresentationPage() {
   const { 
     file, 
     setFile, 
+    setTotalPages,
     currentPage, 
     pdfDocument, 
     nextPage, 
@@ -25,10 +27,18 @@ export function PresentationPage() {
 
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
-    if (!uploadedFile || uploadedFile.type !== 'application/pdf') {
+    if (!uploadedFile || !PRESENTATION.SUPPORTED_TYPES.includes(uploadedFile.type)) {
       alert('Please select a valid PDF file.');
       return;
     }
+
+    if (uploadedFile.size > PRESENTATION.MAX_FILE_SIZE) {
+      alert(`File too large. Maximum size is ${Math.round(PRESENTATION.MAX_FILE_SIZE / 1024 / 1024)}MB.`);
+      return;
+    }
+
+    // Revoke old blob URL to prevent memory leak (W7)
+    if (fileUrl) URL.revokeObjectURL(fileUrl);
 
     const url = URL.createObjectURL(uploadedFile);
     setFileUrl(url);
@@ -42,15 +52,19 @@ export function PresentationPage() {
     });
   };
 
-  // Listen for pdf document load to update total pages
+  // Revoke blob URL on unmount to prevent memory leak (W7)
+  useEffect(() => {
+    return () => {
+      if (fileUrl) URL.revokeObjectURL(fileUrl);
+    };
+  }, [fileUrl]);
+
+  // Update total pages when PDF document loads (W1 — uses dedicated action instead of fragile setFile cycle)
   useEffect(() => {
     if (pdfDocument && file && file.totalPages === 0) {
-      setFile({
-        ...file,
-        totalPages: pdfDocument.numPages
-      });
+      setTotalPages(pdfDocument.numPages);
     }
-  }, [pdfDocument, file, setFile]);
+  }, [pdfDocument, file, setTotalPages]);
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-6 h-full flex flex-col">

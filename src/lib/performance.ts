@@ -5,6 +5,7 @@
 
 export class FPSCounter {
   private frames: number[] = [];
+  private startIdx = 0;
   private readonly windowMs: number;
 
   /**
@@ -19,25 +20,33 @@ export class FPSCounter {
     const now = performance.now();
     this.frames.push(now);
 
-    // Evict frames outside the window
+    // Evict frames outside the window using an index (O(1) per tick)
     const cutoff = now - this.windowMs;
-    while (this.frames.length > 0 && this.frames[0]! < cutoff) {
-      this.frames.shift();
+    while (this.startIdx < this.frames.length && this.frames[this.startIdx]! < cutoff) {
+      this.startIdx++;
+    }
+
+    // Compact the array periodically to prevent unbounded growth
+    if (this.startIdx > 120) {
+      this.frames = this.frames.slice(this.startIdx);
+      this.startIdx = 0;
     }
   }
 
   /** Get current FPS */
   get fps(): number {
-    if (this.frames.length < 2) return 0;
+    const len = this.frames.length - this.startIdx;
+    if (len < 2) return 0;
     return Math.round(
-      ((this.frames.length - 1) * 1000) /
-        (this.frames[this.frames.length - 1]! - this.frames[0]!),
+      ((len - 1) * 1000) /
+        (this.frames[this.frames.length - 1]! - this.frames[this.startIdx]!),
     );
   }
 
   /** Reset the counter */
   reset(): void {
     this.frames = [];
+    this.startIdx = 0;
   }
 }
 

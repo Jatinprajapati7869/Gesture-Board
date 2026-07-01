@@ -1,16 +1,5 @@
 import { create } from 'zustand';
-
-export interface Point {
-  x: number; // Normalized 0-1 relative to canvas width
-  y: number; // Normalized 0-1 relative to canvas height
-}
-
-export interface Stroke {
-  id: string;
-  color: string;
-  width: number;
-  points: Point[];
-}
+import type { Point, Stroke } from '@/types';
 
 export type AnnotationTool = 'pointer' | 'pen' | 'eraser';
 

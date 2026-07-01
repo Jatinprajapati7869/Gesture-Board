@@ -52,19 +52,16 @@ export interface PresentationFile {
 }
 
 // ── Annotations ──
-export interface DrawingPoint {
-  x: number;
-  y: number;
-  pressure: number;
-  timestamp: number;
+export interface Point {
+  x: number; // Normalized 0-1 relative to canvas width
+  y: number; // Normalized 0-1 relative to canvas height
 }
 
-export interface DrawingStroke {
+export interface Stroke {
   id: string;
-  points: DrawingPoint[];
   color: string;
   width: number;
-  slideId: string;
+  points: Point[];
 }
 
 // ── Gesture Mapping ──
