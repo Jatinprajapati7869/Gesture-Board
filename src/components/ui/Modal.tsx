@@ -86,7 +86,7 @@ function Modal({
         aria-label={title}
         className={cn(
           'w-full rounded-2xl',
-          'bg-[var(--gb-bg-elevated)] border border-[var(--gb-border)]',
+          'bg-surface-elevated border border-border-default',
           'shadow-modal',
           'animate-scale-in',
           sizeStyles[size],
@@ -97,12 +97,12 @@ function Modal({
           <div className="flex items-center justify-between px-6 pt-5 pb-1">
             <div>
               {title && (
-                <h2 className="text-lg font-semibold text-[var(--gb-text-primary)]">
+                <h2 className="text-lg font-semibold text-text-primary">
                   {title}
                 </h2>
               )}
               {description && (
-                <p className="mt-1 text-sm text-[var(--gb-text-tertiary)]">
+                <p className="mt-1 text-sm text-text-tertiary">
                   {description}
                 </p>
               )}

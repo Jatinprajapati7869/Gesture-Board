@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { usePresentationStore } from '@/stores/usePresentationStore';
 import { Loader2 } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 
 // Setup PDF.js worker
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.mjs?url';
@@ -150,7 +150,7 @@ export function PDFViewer({ fileUrl, className }: PDFViewerProps) {
 
   if (!fileUrl) {
     return (
-      <div className={cn("flex flex-col items-center justify-center h-full min-h-[400px] border-2 border-dashed border-[var(--gb-border)] rounded-xl bg-[var(--gb-bg-secondary)] text-[var(--gb-text-tertiary)]", className)}>
+      <div className={cn("flex flex-col items-center justify-center h-full min-h-[400px] border-2 border-dashed border-border-default rounded-xl bg-surface-secondary text-text-tertiary", className)}>
         <p>No presentation loaded</p>
       </div>
     );
@@ -159,7 +159,7 @@ export function PDFViewer({ fileUrl, className }: PDFViewerProps) {
   return (
     <div 
       ref={containerRef} 
-      className={cn("relative w-full h-full min-h-[400px] flex items-center justify-center bg-[var(--gb-bg-secondary)] rounded-xl overflow-hidden shadow-inner", className)}
+      className={cn("relative w-full h-full min-h-[400px] flex items-center justify-center bg-surface-secondary rounded-xl overflow-hidden shadow-inner", className)}
     >
       <canvas 
         ref={canvasRef} 
@@ -168,13 +168,13 @@ export function PDFViewer({ fileUrl, className }: PDFViewerProps) {
       
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
-          <Loader2 className="w-8 h-8 text-brand-500 animate-spin" />
+          <Loader2 className="w-8 h-8 text-interactive-primary animate-spin" />
         </div>
       )}
       
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[var(--gb-bg-secondary)]">
-          <p className="text-red-500 font-medium">{error}</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-surface-secondary">
+          <p className="text-feedback-error font-medium">{error}</p>
         </div>
       )}
     </div>

@@ -16,8 +16,8 @@ function Kbd({ children, className, ...props }: KbdProps) {
         'inline-flex items-center justify-center',
         'min-w-[20px] h-5 px-1.5',
         'rounded border',
-        'bg-[var(--gb-bg-secondary)] border-[var(--gb-border)]',
-        'text-[10px] font-mono font-medium text-[var(--gb-text-tertiary)]',
+        'bg-surface-secondary border-border-default',
+        'text-[10px] font-mono font-medium text-text-tertiary',
         'shadow-[0_1px_0_1px_var(--gb-border)]',
         className,
       )}

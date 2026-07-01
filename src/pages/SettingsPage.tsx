@@ -9,11 +9,11 @@ export function SettingsPage() {
     <div className="p-8 max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--gb-text-primary)] tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-text-primary tracking-tight flex items-center gap-3">
             <Settings className="w-8 h-8 text-brand-500" />
             Settings
           </h1>
-          <p className="text-[var(--gb-text-secondary)] mt-2">
+          <p className="text-text-secondary mt-2">
             Customize your presentation and gesture tracking experience.
           </p>
         </div>
@@ -28,10 +28,10 @@ export function SettingsPage() {
         <Card title="Tracking & Camera" padding="md">
           <div className="space-y-6">
             <div className="space-y-3">
-              <label className="text-sm font-medium text-[var(--gb-text-primary)]">
+              <label className="text-sm font-medium text-text-primary">
                 Camera Mirroring
               </label>
-              <p className="text-xs text-[var(--gb-text-tertiary)] mb-2">
+              <p className="text-xs text-text-tertiary mb-2">
                 Flips the camera feed horizontally. Recommended so movements feel like looking in a mirror.
               </p>
               <div className="flex gap-2">
@@ -52,11 +52,11 @@ export function SettingsPage() {
               </div>
             </div>
 
-            <div className="space-y-3 pt-4 border-t border-[var(--gb-border)]">
-              <label className="text-sm font-medium text-[var(--gb-text-primary)]">
+            <div className="space-y-3 pt-4 border-t border-border-default">
+              <label className="text-sm font-medium text-text-primary">
                 Gesture Sensitivity
               </label>
-              <p className="text-xs text-[var(--gb-text-tertiary)] mb-2">
+              <p className="text-xs text-text-tertiary mb-2">
                 Higher sensitivity makes gestures easier to trigger but might cause false positives.
               </p>
               <div className="flex gap-2">
@@ -73,14 +73,14 @@ export function SettingsPage() {
               </div>
             </div>
             
-            <div className="space-y-3 pt-4 border-t border-[var(--gb-border)]">
-              <label className="text-sm font-medium text-[var(--gb-text-primary)] flex items-center justify-between">
+            <div className="space-y-3 pt-4 border-t border-border-default">
+              <label className="text-sm font-medium text-text-primary flex items-center justify-between">
                 <span>Show Confidence Metrics</span>
                 <input 
                   type="checkbox" 
                   checked={settings.showConfidence}
                   onChange={(e) => settings.setShowConfidence(e.target.checked)}
-                  className="rounded border-[var(--gb-border)] bg-[var(--gb-bg-tertiary)] text-brand-500 focus:ring-brand-500"
+                  className="rounded border-border-default bg-surface-tertiary text-brand-500 focus:ring-brand-500"
                 />
               </label>
             </div>
@@ -91,10 +91,10 @@ export function SettingsPage() {
         <Card title="Presentation Controls" padding="md">
           <div className="space-y-6">
             <div className="space-y-3">
-              <label className="text-sm font-medium text-[var(--gb-text-primary)]">
+              <label className="text-sm font-medium text-text-primary">
                 Slide Transition Cooldown (ms)
               </label>
-              <p className="text-xs text-[var(--gb-text-tertiary)] mb-2">
+              <p className="text-xs text-text-tertiary mb-2">
                 The minimum time required between slide transitions to prevent rapid skipping.
               </p>
               <div className="flex items-center gap-4">
@@ -107,7 +107,7 @@ export function SettingsPage() {
                   onChange={(e) => settings.setPresentationCooldownMs(Number(e.target.value))}
                   className="flex-1"
                 />
-                <span className="font-mono text-sm w-12 text-right text-[var(--gb-text-secondary)]">
+                <span className="font-mono text-sm w-12 text-right text-text-secondary">
                   {settings.presentationCooldownMs}
                 </span>
               </div>

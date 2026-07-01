@@ -1,117 +1,54 @@
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
-import { cn } from '@/lib/cn';
+import { forwardRef } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
-type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
+export const buttonVariants = cva(
+  'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-ring disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-interactive-primary text-text-inverse hover:bg-interactive-primary-hover',
+        secondary: 'bg-interactive-secondary text-text-primary hover:bg-interactive-secondary-hover',
+        destructive: 'bg-feedback-error text-text-inverse hover:bg-feedback-error/90',
+        ghost: 'hover:bg-interactive-secondary text-text-primary',
+        link: 'text-text-brand underline-offset-4 hover:underline',
+      },
+      size: {
+        sm: 'h-8 px-3 text-xs',
+        md: 'h-10 px-4 text-sm',
+        lg: 'h-12 px-6 text-base',
+        icon: 'h-10 w-10',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+    },
+  }
+);
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  loading?: boolean;
-  icon?: ReactNode;
-  children?: ReactNode;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  isLoading?: boolean;
 }
 
-const variantStyles: Record<ButtonVariant, string> = {
-  primary: [
-    'bg-brand-500 text-white',
-    'hover:bg-brand-600 active:bg-brand-700',
-    'shadow-soft hover:shadow-card',
-  ].join(' '),
-  secondary: [
-    'bg-[var(--gb-bg-tertiary)] text-[var(--gb-text-primary)]',
-    'border border-[var(--gb-border)]',
-    'hover:bg-[var(--gb-hover-bg)] hover:border-[var(--gb-border-hover)]',
-    'active:bg-[var(--gb-active-bg)]',
-  ].join(' '),
-  ghost: [
-    'text-[var(--gb-text-secondary)]',
-    'hover:bg-[var(--gb-hover-bg)] hover:text-[var(--gb-text-primary)]',
-    'active:bg-[var(--gb-active-bg)]',
-  ].join(' '),
-  danger: [
-    'bg-error-500 text-white',
-    'hover:bg-error-500/90 active:bg-error-500/80',
-    'shadow-soft',
-  ].join(' '),
-};
-
-const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3 text-xs gap-1.5 rounded-md',
-  md: 'h-9 px-4 text-sm gap-2 rounded-lg',
-  lg: 'h-11 px-6 text-base gap-2.5 rounded-lg',
-  icon: 'h-9 w-9 rounded-lg justify-center',
-};
-
-/**
- * Primary button component with variants, sizes, and loading state.
- * Follows the design language of Linear/Vercel.
- */
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      variant = 'primary',
-      size = 'md',
-      loading = false,
-      icon,
-      children,
-      className,
-      disabled,
-      ...props
-    },
-    ref,
-  ) => {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, isLoading, children, disabled, ...props }, ref) => {
     return (
       <button
         ref={ref}
-        className={cn(
-          // Base styles
-          'inline-flex items-center font-medium',
-          'transition-all duration-150 ease-out',
-          'focus-ring cursor-pointer',
-          'disabled:opacity-50 disabled:pointer-events-none',
-          // Variant & size
-          variantStyles[variant],
-          sizeStyles[size],
-          // Loading state
-          loading && 'pointer-events-none',
-          className,
-        )}
-        disabled={disabled || loading}
+        className={cn(buttonVariants({ variant, size, className }))}
+        disabled={disabled || isLoading}
+        aria-busy={isLoading}
         {...props}
       >
-        {loading ? (
-          <svg
-            className="animate-spin h-4 w-4"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              className="opacity-25"
-            />
-            <path
-              d="M4 12a8 8 0 018-8"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              className="opacity-75"
-            />
-          </svg>
-        ) : icon ? (
-          <span className="shrink-0 [&>svg]:h-4 [&>svg]:w-4">{icon}</span>
-        ) : null}
-        {children && <span>{children}</span>}
+        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
+        {children}
       </button>
     );
-  },
+  }
 );
 
 Button.displayName = 'Button';
-
-export { Button, type ButtonProps, type ButtonVariant, type ButtonSize };

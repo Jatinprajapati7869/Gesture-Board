@@ -92,7 +92,7 @@ export function WebcamPreview({ className }: WebcamPreviewProps) {
   }, []);
 
   return (
-    <div className={cn('relative rounded-xl overflow-hidden bg-black/90 aspect-video flex items-center justify-center border border-[var(--gb-border)]', className)}>
+    <div className={cn('relative rounded-xl overflow-hidden bg-black/90 aspect-video flex items-center justify-center border border-border-default', className)}>
       {error ? (
         <div className="text-center p-4 text-error-500 flex flex-col items-center gap-2">
           <CameraOff className="h-8 w-8 mb-2" />
@@ -116,9 +116,9 @@ export function WebcamPreview({ className }: WebcamPreviewProps) {
               await startCamera();
               startTracking();
             }} 
-            loading={isInitializing} 
-            icon={<Camera />}
+            isLoading={isInitializing} 
           >
+            <Camera className="w-4 h-4 mr-2" />
             Enable Camera
           </Button>
         </div>

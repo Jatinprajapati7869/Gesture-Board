@@ -52,7 +52,7 @@ function Toggle({
           trackSize,
           checked
             ? 'bg-brand-500'
-            : 'bg-[var(--gb-bg-tertiary)] border border-[var(--gb-border)]',
+            : 'bg-surface-tertiary border border-border-default',
         )}
       >
         <span
@@ -69,12 +69,12 @@ function Toggle({
       {(label || description) && (
         <div className="flex flex-col">
           {label && (
-            <span className="text-sm font-medium text-[var(--gb-text-primary)]">
+            <span className="text-sm font-medium text-text-primary">
               {label}
             </span>
           )}
           {description && (
-            <span className="text-xs text-[var(--gb-text-tertiary)]">
+            <span className="text-xs text-text-tertiary">
               {description}
             </span>
           )}

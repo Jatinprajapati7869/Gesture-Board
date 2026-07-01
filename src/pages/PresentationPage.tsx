@@ -70,11 +70,11 @@ export function PresentationPage() {
     <div className="p-8 max-w-6xl mx-auto space-y-6 h-full flex flex-col">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold text-[var(--gb-text-primary)] tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-text-primary tracking-tight flex items-center gap-3">
             <PresentationIcon className="w-8 h-8 text-brand-500" />
             Presentation Mode
           </h1>
-          <p className="text-[var(--gb-text-secondary)]">
+          <p className="text-text-secondary">
             Upload your PDF deck. Use gestures to navigate slides without touching your keyboard.
           </p>
         </div>
@@ -100,10 +100,10 @@ export function PresentationPage() {
               <Upload className="w-10 h-10 text-brand-500" />
             </div>
             <div>
-              <h3 className="text-lg font-medium text-[var(--gb-text-primary)] mb-2">
+              <h3 className="text-lg font-medium text-text-primary mb-2">
                 Upload your slides
               </h3>
-              <p className="text-sm text-[var(--gb-text-secondary)] mb-6">
+              <p className="text-sm text-text-secondary mb-6">
                 Select a PDF presentation to get started. All processing happens locally in your browser.
               </p>
               <Button onClick={() => fileInputRef.current?.click()} className="w-full">
@@ -123,7 +123,7 @@ export function PresentationPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-0">
           {/* Main Slide Area */}
           <div className="lg:col-span-3 flex flex-col gap-4 min-h-0">
-            <Card padding="none" className="flex-1 p-2 bg-[var(--gb-bg-secondary)] overflow-hidden relative">
+            <Card padding="none" className="flex-1 p-2 bg-surface-secondary overflow-hidden relative">
               <PDFViewer fileUrl={fileUrl} className="w-full h-full object-contain relative z-0" />
               <AnnotationCanvas className="z-10" />
             </Card>
@@ -139,8 +139,8 @@ export function PresentationPage() {
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
-                <div className="font-mono text-sm font-medium text-[var(--gb-text-secondary)]">
-                  Slide {currentPage} <span className="text-[var(--gb-text-tertiary)]">/ {file?.totalPages || '?'}</span>
+                <div className="font-mono text-sm font-medium text-text-secondary">
+                  Slide {currentPage} <span className="text-text-tertiary">/ {file?.totalPages || '?'}</span>
                 </div>
                 <Button 
                   variant="secondary" 
@@ -152,7 +152,7 @@ export function PresentationPage() {
                 </Button>
               </div>
               
-              <Badge variant={currentGesture.type !== 'none' ? 'brand' : 'default'} dot>
+              <Badge variant={currentGesture.type !== 'none' ? 'brand' : 'default'}>
                 {currentGesture.type !== 'none' ? 'Gesture Detected' : 'Gestures Active'}
               </Badge>
             </div>
@@ -197,16 +197,16 @@ export function PresentationPage() {
 
             <Card title="Gesture Controls" padding="md">
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--gb-bg-secondary)] border border-[var(--gb-border)]">
-                  <span className="text-sm font-medium text-[var(--gb-text-primary)]">Next Slide</span>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-surface-secondary border border-border-default">
+                  <span className="text-sm font-medium text-text-primary">Next Slide</span>
                   <Badge variant="brand">Peace</Badge>
                 </div>
-                <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--gb-bg-secondary)] border border-[var(--gb-border)]">
-                  <span className="text-sm font-medium text-[var(--gb-text-primary)]">Prev Slide</span>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-surface-secondary border border-border-default">
+                  <span className="text-sm font-medium text-text-primary">Prev Slide</span>
                   <Badge variant="brand">Open Palm</Badge>
                 </div>
-                <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--gb-bg-secondary)] border border-[var(--gb-border)]">
-                  <span className="text-sm font-medium text-[var(--gb-text-primary)]">Draw/Laser</span>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-surface-secondary border border-border-default">
+                  <span className="text-sm font-medium text-text-primary">Draw/Laser</span>
                   <Badge variant="brand">Pinch / Point</Badge>
                 </div>
               </div>
@@ -216,20 +216,20 @@ export function PresentationPage() {
               <Card title="Deck Info" padding="md">
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-[var(--gb-text-tertiary)]">Name</span>
-                    <span className="text-[var(--gb-text-primary)] truncate max-w-[150px]" title={file.name}>
+                    <span className="text-text-tertiary">Name</span>
+                    <span className="text-text-primary truncate max-w-[150px]" title={file.name}>
                       {file.name}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[var(--gb-text-tertiary)]">Size</span>
-                    <span className="text-[var(--gb-text-primary)]">
+                    <span className="text-text-tertiary">Size</span>
+                    <span className="text-text-primary">
                       {(file.fileSize / 1024 / 1024).toFixed(2)} MB
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[var(--gb-text-tertiary)]">Pages</span>
-                    <span className="text-[var(--gb-text-primary)]">{file.totalPages}</span>
+                    <span className="text-text-tertiary">Pages</span>
+                    <span className="text-text-primary">{file.totalPages}</span>
                   </div>
                 </div>
               </Card>

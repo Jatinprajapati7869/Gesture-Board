@@ -48,7 +48,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   }, []);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[var(--gb-bg)]">
+    <div className="flex h-screen overflow-hidden bg-surface-primary">
       {/* Sidebar */}
       <Sidebar currentPage={currentPage} onNavigate={handleNavigate} />
 
@@ -63,4 +63,3 @@ export function AppLayout({ children }: AppLayoutProps) {
     </div>
   );
 }
-

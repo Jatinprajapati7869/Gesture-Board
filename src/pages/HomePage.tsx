@@ -49,11 +49,11 @@ function HomePage({ onNavigate }: HomePageProps) {
     <div className="min-h-full">
       {/* ── Hero ── */}
       <section className="max-w-3xl mx-auto px-6 pt-20 pb-16 text-center">
-        <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[var(--gb-text-primary)]">
+        <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-text-primary">
           Control slides with your hands
         </h1>
 
-        <p className="mt-6 max-w-xl mx-auto text-lg text-[var(--gb-text-secondary)] leading-relaxed">
+        <p className="mt-6 max-w-xl mx-auto text-lg text-text-secondary leading-relaxed">
           Step back from the laptop. Swipe through slides, draw annotations, and
           point at content — all with hand gestures your webcam picks up in
           real time. Nothing to install, nothing to pair.
@@ -66,20 +66,20 @@ function HomePage({ onNavigate }: HomePageProps) {
           <Button
             variant="secondary"
             size="lg"
-            icon={<Code2 />}
             onClick={() =>
               window.open('https://github.com', '_blank')
             }
           >
+            <Code2 className="mr-2 h-5 w-5" />
             Source
           </Button>
         </div>
       </section>
 
       {/* ── Gesture reference ── */}
-      <section className="border-y border-[var(--gb-border)] bg-[var(--gb-bg-secondary)]">
+      <section className="border-y border-border-default bg-surface-secondary">
         <div className="max-w-3xl mx-auto px-6 py-12">
-          <h2 className="font-display text-2xl font-bold text-[var(--gb-text-primary)] mb-8">
+          <h2 className="font-display text-2xl font-bold text-text-primary mb-8">
             Five gestures, zero hardware
           </h2>
 
@@ -98,14 +98,14 @@ function HomePage({ onNavigate }: HomePageProps) {
                 </span>
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-sm font-semibold text-[var(--gb-text-primary)]">
+                    <span className="text-sm font-semibold text-text-primary">
                       {name}
                     </span>
-                    <span className="text-xs text-[var(--gb-text-tertiary)]">
+                    <span className="text-xs text-text-tertiary">
                       — {action}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-[var(--gb-text-secondary)] leading-relaxed">
+                  <p className="mt-1 text-sm text-text-secondary leading-relaxed">
                     {detail}
                   </p>
                 </div>
@@ -116,19 +116,19 @@ function HomePage({ onNavigate }: HomePageProps) {
       </section>
 
       {/* ── Telemetry strip ── */}
-      <section className="border-b border-[var(--gb-border)]">
+      <section className="border-b border-border-default">
         <div className="max-w-3xl mx-auto px-6 py-6 flex items-center justify-between sm:justify-start sm:gap-12">
           {STATS.map(({ value, unit, label }) => (
             <div key={label} className="flex items-baseline gap-1.5">
-              <span className="font-mono text-xl font-medium text-[var(--gb-text-primary)]">
+              <span className="font-mono text-xl font-medium text-text-primary">
                 {value}
               </span>
               {unit && (
-                <span className="font-mono text-xs text-[var(--gb-text-tertiary)]">
+                <span className="font-mono text-xs text-text-tertiary">
                   {unit}
                 </span>
               )}
-              <span className="text-xs text-[var(--gb-text-tertiary)] ml-1">
+              <span className="text-xs text-text-tertiary ml-1">
                 {label}
               </span>
             </div>
@@ -138,10 +138,11 @@ function HomePage({ onNavigate }: HomePageProps) {
 
       {/* ── CTA ── */}
       <section className="max-w-3xl mx-auto px-6 py-16 text-center">
-        <p className="text-lg text-[var(--gb-text-secondary)] mb-6">
+        <p className="text-lg text-text-secondary mb-6">
           Upload a PDF, turn on your webcam, and start.
         </p>
-        <Button icon={<ArrowRight />} onClick={() => onNavigate('onboarding')}>
+        <Button onClick={() => onNavigate('onboarding')}>
+          <ArrowRight className="mr-2 h-4 w-4" />
           Open presenter
         </Button>
       </section>

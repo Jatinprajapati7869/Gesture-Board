@@ -9,7 +9,7 @@ import {
   Sun,
   Moon,
 } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 import { Tooltip, Kbd } from '@/components/ui';
 import { useTheme } from '@/hooks/useTheme';
 import { APP } from '@/lib/constants';
@@ -48,7 +48,7 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
     <aside
       className={cn(
         'flex flex-col h-full',
-        'bg-[var(--gb-sidebar-bg)] border-r border-[var(--gb-sidebar-border)]',
+        'bg-surface-primary border-r border-border-default',
         'transition-all duration-300 ease-out',
         collapsed ? 'w-16' : 'w-[260px]',
       )}
@@ -56,15 +56,15 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       {/* Logo */}
       <div
         className={cn(
-          'flex items-center gap-3 px-4 h-14 border-b border-[var(--gb-sidebar-border)]',
+          'flex items-center gap-3 px-4 h-14 border-b border-border-default',
           collapsed && 'justify-center px-0',
         )}
       >
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500 shrink-0">
-          <Hand className="h-4 w-4 text-white" />
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-interactive-primary shrink-0">
+          <Hand className="h-4 w-4 text-text-inverse" />
         </div>
         {!collapsed && (
-          <span className="text-sm font-semibold text-[var(--gb-text-primary)] truncate">
+          <span className="text-sm font-semibold text-text-primary truncate">
             {APP.NAME}
           </span>
         )}
@@ -86,8 +86,8 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
                 'focus-ring cursor-pointer',
                 collapsed ? 'justify-center h-10 w-10 mx-auto' : 'px-3 h-10',
                 isActive
-                  ? 'bg-brand-500/10 text-brand-500'
-                  : 'text-[var(--gb-text-secondary)] hover:bg-[var(--gb-hover-bg)] hover:text-[var(--gb-text-primary)]',
+                  ? 'bg-interactive-primary/10 text-text-brand'
+                  : 'text-text-secondary hover:bg-interactive-secondary hover:text-text-primary',
               )}
             >
               <Icon className="h-[18px] w-[18px] shrink-0" />
@@ -113,7 +113,7 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       </nav>
 
       {/* Bottom actions */}
-      <div className="py-3 px-2 space-y-1 border-t border-[var(--gb-sidebar-border)]">
+      <div className="py-3 px-2 space-y-1 border-t border-border-default">
         {/* Theme toggle */}
         <Tooltip
           content={resolved === 'dark' ? 'Light mode' : 'Dark mode'}
@@ -124,7 +124,7 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
             className={cn(
               'w-full flex items-center gap-3 rounded-lg',
               'text-sm font-medium transition-all duration-150',
-              'text-[var(--gb-text-secondary)] hover:bg-[var(--gb-hover-bg)] hover:text-[var(--gb-text-primary)]',
+              'text-text-secondary hover:bg-interactive-secondary hover:text-text-primary',
               'focus-ring cursor-pointer',
               collapsed ? 'justify-center h-10 w-10 mx-auto' : 'px-3 h-10',
             )}
@@ -148,7 +148,7 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
             className={cn(
               'w-full flex items-center gap-3 rounded-lg',
               'text-sm font-medium transition-all duration-150',
-              'text-[var(--gb-text-secondary)] hover:bg-[var(--gb-hover-bg)] hover:text-[var(--gb-text-primary)]',
+              'text-text-secondary hover:bg-interactive-secondary hover:text-text-primary',
               'focus-ring cursor-pointer',
               collapsed ? 'justify-center h-10 w-10 mx-auto' : 'px-3 h-10',
             )}

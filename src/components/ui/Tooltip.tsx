@@ -68,7 +68,7 @@ function Tooltip({
             'absolute z-50 whitespace-nowrap',
             'rounded-md px-2.5 py-1.5',
             'text-xs font-medium',
-            'bg-[var(--gb-text-primary)] text-[var(--gb-text-inverse)]',
+            'bg-[var(--gb-text-primary)] text-text-inverse',
             'shadow-elevated',
             'animate-fade-in pointer-events-none',
             sideStyles[side],

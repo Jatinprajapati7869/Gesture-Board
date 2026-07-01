@@ -42,12 +42,12 @@ function ToastContainer() {
             )}
           >
             <Icon className="h-4 w-4 shrink-0" />
-            <span className="text-sm font-medium text-[var(--gb-text-primary)] flex-1">
+            <span className="text-sm font-medium text-text-primary flex-1">
               {t.message}
             </span>
             <button
               onClick={() => removeToast(t.id)}
-              className="shrink-0 text-[var(--gb-text-tertiary)] hover:text-[var(--gb-text-secondary)] transition-colors"
+              className="shrink-0 text-text-tertiary hover:text-text-secondary transition-colors"
               aria-label="Dismiss"
             >
               <X className="h-3.5 w-3.5" />
