@@ -80,6 +80,7 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
+              aria-label={item.label}
               className={cn(
                 'w-full flex items-center gap-3 rounded-lg',
                 'text-sm font-medium transition-all duration-150',
@@ -121,6 +122,7 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
         >
           <button
             onClick={toggleTheme}
+            aria-label={resolved === 'dark' ? 'Switch to Light mode' : 'Switch to Dark mode'}
             className={cn(
               'w-full flex items-center gap-3 rounded-lg',
               'text-sm font-medium transition-all duration-150',
@@ -145,6 +147,7 @@ function Sidebar({ currentPage, onNavigate }: SidebarProps) {
         >
           <button
             onClick={() => setCollapsed(!collapsed)}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             className={cn(
               'w-full flex items-center gap-3 rounded-lg',
               'text-sm font-medium transition-all duration-150',

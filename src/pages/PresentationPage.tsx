@@ -136,6 +136,7 @@ export function PresentationPage() {
                   size="icon" 
                   onClick={prevPage}
                   disabled={currentPage <= 1}
+                  aria-label="Previous Slide"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
@@ -147,14 +148,17 @@ export function PresentationPage() {
                   size="icon" 
                   onClick={nextPage}
                   disabled={!!file && currentPage >= file.totalPages}
+                  aria-label="Next Slide"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </Button>
               </div>
               
-              <Badge variant={currentGesture.type !== 'none' ? 'brand' : 'default'}>
-                {currentGesture.type !== 'none' ? 'Gesture Detected' : 'Gestures Active'}
-              </Badge>
+              <div aria-live="polite" aria-atomic="true">
+                <Badge variant={currentGesture.type !== 'none' ? 'brand' : 'default'}>
+                  {currentGesture.type !== 'none' ? 'Gesture Detected' : 'Gestures Active'}
+                </Badge>
+              </div>
             </div>
           </div>
 
@@ -162,7 +166,7 @@ export function PresentationPage() {
           <div className="space-y-6 overflow-y-auto pr-2">
             <Card padding="none" className="overflow-hidden bg-black aspect-video relative">
               <WebcamPreview className="w-full h-full object-cover" />
-              <div className="absolute bottom-2 right-2">
+              <div className="absolute bottom-2 right-2" aria-live="polite" aria-atomic="true">
                 <Badge variant={currentGesture.type !== 'none' ? 'brand' : 'default'} className="bg-black/80 backdrop-blur">
                   {currentGesture.type.replace('_', ' ')}
                 </Badge>
