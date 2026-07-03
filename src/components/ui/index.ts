@@ -1,4 +1,5 @@
-export { Button, buttonVariants } from './Button';
+export { Button } from './Button';
+export { buttonVariants } from './button-variants';
 export type { ButtonProps } from './Button';
 
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './Card';
@@ -10,7 +11,8 @@ export type { ToggleProps } from './Toggle';
 export { Tooltip } from './Tooltip';
 export type { TooltipProps } from './Tooltip';
 
-export { Badge, badgeVariants } from './Badge';
+export { Badge } from './Badge';
+export { badgeVariants } from './badge-variants';
 export type { BadgeProps } from './Badge';
 
 export { Modal } from './Modal';

@@ -7,7 +7,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
 }
 
-export const Card = forwardRef<HTMLDivElement, CardProps>(({ className, padding, variant, title, children, ...props }, ref) => {
+export const Card = forwardRef<HTMLDivElement, CardProps>(({ className, padding, variant: _variant, title, children, ...props }, ref) => {
   return (
     <div
       ref={ref}

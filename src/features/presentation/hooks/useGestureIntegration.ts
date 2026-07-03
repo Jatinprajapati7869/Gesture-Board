@@ -8,47 +8,53 @@ import { useSettingsStore } from '@/stores/useSettingsStore';
 
 export function useGestureIntegration() {
   const lastActionTime = useRef<number>(0);
-  const { currentGesture, trackingResult } = useGestureStore();
-  const { nextPage, prevPage, currentPage } = usePresentationStore();
-  const { presentationCooldownMs, mirrorCamera } = useSettingsStore();
+  const { currentGesture } = useGestureStore();
+  const { nextPage, prevPage } = usePresentationStore();
+  const { presentationCooldownMs } = useSettingsStore();
   const { 
     setCursorPosition, 
     startStroke, 
     addPointToStroke, 
-    endStroke, 
-    isDrawing,
-    tool
+    endStroke
   } = useAnnotationStore();
 
-  // Handle drawing and cursor updates
   useEffect(() => {
-    if (!trackingResult || trackingResult.landmarks.length === 0) {
-      if (isDrawing) {
-        endStroke(currentPage);
+    const unsubscribe = useGestureStore.subscribe((state) => {
+      const trackingResult = state.trackingResult;
+      
+      if (!trackingResult || trackingResult.landmarks.length === 0) {
+        if (useAnnotationStore.getState().isDrawing) {
+          endStroke(usePresentationStore.getState().currentPage);
+        }
+        setCursorPosition(null);
+        return;
       }
-      setCursorPosition(null);
-      return;
-    }
 
-    // Get the index finger tip (landmark 8)
-    const indexTip = trackingResult.landmarks[8];
-    
-    // Mirror X coordinate if the camera feed is mirrored
-    const point = { x: mirrorCamera ? 1 - indexTip.x : indexTip.x, y: indexTip.y };
-    setCursorPosition(point);
+      // Get the index finger tip (landmark 8)
+      const indexTip = trackingResult.landmarks[8];
+      
+      // Mirror X coordinate if the camera feed is mirrored
+      const point = { x: useSettingsStore.getState().mirrorCamera ? 1 - indexTip.x : indexTip.x, y: indexTip.y };
+      setCursorPosition(point);
 
-    if (currentGesture.type === 'pinch') {
-      if (!isDrawing && tool === 'pen') {
-        startStroke(point);
-      } else if (isDrawing && tool === 'pen') {
-        addPointToStroke(point);
+      const currentType = useGestureStore.getState().currentGesture.type;
+      const { isDrawing, tool } = useAnnotationStore.getState();
+
+      if (currentType === 'pinch') {
+        if (!isDrawing && tool === 'pen') {
+          startStroke(point);
+        } else if (isDrawing && tool === 'pen') {
+          addPointToStroke(point);
+        }
+      } else {
+        if (isDrawing) {
+          endStroke(usePresentationStore.getState().currentPage);
+        }
       }
-    } else {
-      if (isDrawing) {
-        endStroke(currentPage);
-      }
-    }
-  }, [trackingResult, currentGesture.type, currentPage, tool, isDrawing, mirrorCamera, setCursorPosition, startStroke, addPointToStroke, endStroke]);
+    });
+
+    return () => unsubscribe();
+  }, [setCursorPosition, startStroke, addPointToStroke, endStroke]);
 
   // Handle slide navigation with cooldowns
   useEffect(() => {

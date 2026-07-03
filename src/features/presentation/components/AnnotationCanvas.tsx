@@ -14,7 +14,7 @@ export function AnnotationCanvas({ className }: AnnotationCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { currentPage } = usePresentationStore();
-  const { strokes, currentStroke, cursorPosition, tool, activeColor } = useAnnotationStore();
+  const { tool, activeColor } = useAnnotationStore();
 
   // Resize canvas to match container exactly
   useEffect(() => {
@@ -70,15 +70,17 @@ export function AnnotationCanvas({ className }: AnnotationCanvasProps) {
     ctx.clearRect(0, 0, width, height);
     
     // Draw completed strokes for this page
-    const pageStrokes = strokes[currentPage] || [];
+    const pageStrokes = useAnnotationStore.getState().strokes[usePresentationStore.getState().currentPage] || [];
     pageStrokes.forEach(stroke => drawStroke(ctx, stroke, width, height));
     
     // Draw current active stroke
+    const currentStroke = useAnnotationStore.getState().currentStroke;
     if (currentStroke) {
       drawStroke(ctx, currentStroke, width, height);
     }
     
     // Draw cursor / laser pointer
+    const cursorPosition = useAnnotationStore.getState().cursorPosition;
     if (cursorPosition) {
       const x = cursorPosition.x * width;
       const y = cursorPosition.y * height;
@@ -105,11 +107,19 @@ export function AnnotationCanvas({ className }: AnnotationCanvasProps) {
     }
   };
 
-  // Render on data change
+  // Render on data change via Zustand subscription to avoid React renders
   useEffect(() => {
+    // Initial render
     renderCanvas();
+
+    // Subscribe to all changes
+    const unsubscribe = useAnnotationStore.subscribe(() => {
+      renderCanvas();
+    });
+
+    return () => unsubscribe();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [strokes, currentStroke, cursorPosition, currentPage, tool, activeColor]);
+  }, [currentPage, tool, activeColor]);
 
   const drawStroke = (ctx: CanvasRenderingContext2D, stroke: Stroke, canvasWidth: number, canvasHeight: number) => {
     if (stroke.points.length === 0) return;
