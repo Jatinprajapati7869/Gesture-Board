@@ -117,6 +117,17 @@ export function recognizeGesture(landmarks: HandLandmark[]): GestureResult {
     return { type: 'open_palm', confidence, timestamp: performance.now() };
   }
 
+  // THUMBS UP: Thumb extended, others closed, thumb tip higher than index MCP
+  if (extendedFingersCount === 0 && thumbExt) {
+    const thumbTip = landmarks[THUMB_TIP];
+    const indexMcp = landmarks[INDEX_MCP];
+    // In screen coordinates, y=0 is top. So tip.y < mcp.y means pointing up.
+    if (thumbTip.y < indexMcp.y) {
+      const confidence = computeFingerConfidence(landmarks, [true, false, false, false, false]);
+      return { type: 'thumbs_up', confidence, timestamp: performance.now() };
+    }
+  }
+
   // FIST: No fingers extended
   if (extendedFingersCount === 0 && !thumbExt) {
     const confidence = computeFingerConfidence(landmarks, [false, false, false, false, false]);

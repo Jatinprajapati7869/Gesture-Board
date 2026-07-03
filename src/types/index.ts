@@ -15,7 +15,8 @@ export type GestureType =
   | 'pinch'
   | 'peace'
   | 'swipe_left'
-  | 'swipe_right';
+  | 'swipe_right'
+  | 'thumbs_up';
 
 export interface GestureResult {
   type: GestureType;
@@ -62,6 +63,7 @@ export interface Stroke {
   color: string;
   width: number;
   points: Point[];
+  isHighlighter?: boolean;
 }
 
 // ── Gesture Mapping ──

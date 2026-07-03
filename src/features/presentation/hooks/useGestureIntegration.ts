@@ -40,11 +40,24 @@ export function useGestureIntegration() {
       const currentType = useGestureStore.getState().currentGesture.type;
       const { isDrawing, tool } = useAnnotationStore.getState();
 
-      if (currentType === 'pinch') {
-        if (!isDrawing && tool === 'pen') {
-          startStroke(point);
-        } else if (isDrawing && tool === 'pen') {
-          addPointToStroke(point);
+      if (currentType === 'pinch' || currentType === 'thumbs_up') {
+        const expectedTool = currentType === 'thumbs_up' ? 'highlighter' : 'pen';
+        
+        // Auto-switch tool if using the specific gesture
+        if (tool !== expectedTool && currentType === 'thumbs_up') {
+          useAnnotationStore.getState().setTool('highlighter');
+        }
+
+        // We check the tool again because we might have just updated it, or we might be in 'pinch' 
+        // where we only draw if the tool is already 'pen' (to avoid accidental drawing when pointing).
+        const currentTool = useAnnotationStore.getState().tool;
+
+        if (currentTool === expectedTool) {
+          if (!isDrawing) {
+            startStroke(point);
+          } else {
+            addPointToStroke(point);
+          }
         }
       } else {
         if (isDrawing) {

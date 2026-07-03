@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Point, Stroke } from '@/types';
 
-export type AnnotationTool = 'pointer' | 'pen' | 'eraser';
+export type AnnotationTool = 'pointer' | 'pen' | 'highlighter' | 'eraser';
 
 interface AnnotationState {
   tool: AnnotationTool;
@@ -43,15 +43,16 @@ export const useAnnotationStore = create<AnnotationState>((set, get) => ({
   
   startStroke: (point) => {
     const { tool, activeColor, strokeWidth } = get();
-    if (tool !== 'pen') return;
+    if (tool !== 'pen' && tool !== 'highlighter') return;
     
     set({
       isDrawing: true,
       currentStroke: {
         id: crypto.randomUUID(),
-        color: activeColor,
-        width: strokeWidth,
-        points: [point]
+        color: tool === 'highlighter' ? `${activeColor}80` : activeColor, // 50% opacity for highlighter
+        width: tool === 'highlighter' ? strokeWidth * 4 : strokeWidth, // Thicker stroke for highlighter
+        points: [point],
+        isHighlighter: tool === 'highlighter'
       },
       cursorPosition: point
     });

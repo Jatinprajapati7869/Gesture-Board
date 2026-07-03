@@ -186,6 +186,13 @@ export function PresentationPage() {
                   Pen
                 </Button>
                 <Button 
+                  variant={tool === 'highlighter' ? 'primary' : 'secondary'} 
+                  className="flex-1"
+                  onClick={() => setTool('highlighter')}
+                >
+                  Highlight
+                </Button>
+                <Button 
                   variant="secondary" 
                   className="flex-1"
                   onClick={() => clearPage(currentPage)}
@@ -208,6 +215,10 @@ export function PresentationPage() {
                 <div className="flex items-center justify-between p-3 rounded-lg bg-surface-secondary border border-border-default">
                   <span className="text-sm font-medium text-text-primary">Draw/Laser</span>
                   <Badge variant="brand">Pinch / Point</Badge>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-surface-secondary border border-border-default">
+                  <span className="text-sm font-medium text-text-primary">Highlight</span>
+                  <Badge variant="brand">Thumbs Up</Badge>
                 </div>
               </div>
             </Card>

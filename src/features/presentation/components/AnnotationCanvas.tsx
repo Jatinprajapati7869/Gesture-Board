@@ -97,11 +97,15 @@ export function AnnotationCanvas({ className }: AnnotationCanvasProps) {
         ctx.arc(x, y, CANVAS.POINTER_GLOW_RADIUS * dpr, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
         ctx.fill();
-      } else if (tool === 'pen') {
-        // Brush preview
+      } else if (tool === 'pen' || tool === 'highlighter') {
+        // Brush/Highlighter preview
+        const isHighlighter = tool === 'highlighter';
+        const defaultWidth = isHighlighter ? CANVAS.DEFAULT_PEN_WIDTH * 4 : CANVAS.DEFAULT_PEN_WIDTH;
+        const color = isHighlighter ? `${activeColor}80` : activeColor;
+        
         ctx.beginPath();
-        ctx.arc(x, y, (currentStroke?.width || CANVAS.DEFAULT_PEN_WIDTH) * dpr / 2, 0, Math.PI * 2);
-        ctx.fillStyle = activeColor;
+        ctx.arc(x, y, (currentStroke?.width || defaultWidth) * dpr / 2, 0, Math.PI * 2);
+        ctx.fillStyle = color;
         ctx.fill();
       }
     }
