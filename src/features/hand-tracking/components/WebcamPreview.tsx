@@ -94,20 +94,27 @@ export function WebcamPreview({ className }: WebcamPreviewProps) {
   return (
     <div className={cn('relative rounded-xl overflow-hidden bg-black/90 aspect-video flex items-center justify-center border border-border-default', className)}>
       {error ? (
-        <div className="text-center p-4 text-error-500 flex flex-col items-center gap-2">
-          <CameraOff className="h-8 w-8 mb-2" />
+        <div className="text-center p-6 text-error-500 flex flex-col items-center gap-3 bg-black/60 backdrop-blur-sm rounded-xl">
+          <CameraOff className="h-10 w-10 mb-1" />
           <p className="text-sm font-medium">{error.message}</p>
-          <Button 
-            variant="secondary" 
-            size="sm" 
-            onClick={async () => {
-              await startCamera();
-              startTracking();
-            }} 
-            className="mt-2"
-          >
-            Retry
-          </Button>
+          {error.code !== 'CAMERA_NOTALLOWEDERROR' && (
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              onClick={async () => {
+                await startCamera();
+                startTracking();
+              }} 
+              className="mt-2"
+            >
+              Retry
+            </Button>
+          )}
+          {error.code === 'CAMERA_NOTALLOWEDERROR' && (
+            <p className="text-xs text-text-tertiary mt-2">
+              Check your browser's address bar for the camera icon to grant access, then refresh the page.
+            </p>
+          )}
         </div>
       ) : !stream ? (
         <div className="text-center p-4">

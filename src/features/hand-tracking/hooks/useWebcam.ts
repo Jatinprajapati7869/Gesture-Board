@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { CameraAccessError, type AppError } from '@/lib/errors';
 
 interface UseWebcamOptions {
   width?: number;
@@ -11,7 +12,7 @@ export function useWebcam(options: UseWebcamOptions = {}) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
   const [isInitializing, setIsInitializing] = useState(false);
 
   const startCamera = useCallback(async () => {
@@ -36,7 +37,11 @@ export function useWebcam(options: UseWebcamOptions = {}) {
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to access camera'));
+      if (err instanceof DOMException) {
+        setError(new CameraAccessError(err.name, err));
+      } else {
+        setError(new CameraAccessError('UnknownError', err instanceof Error ? err : undefined));
+      }
     } finally {
       setIsInitializing(false);
     }

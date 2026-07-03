@@ -73,8 +73,8 @@ export function useHandTracking(videoRef: React.RefObject<HTMLVideoElement | nul
     if (isTracking) {
       handLandmarkerService.initialize().then(() => {
         requestRef.current = requestAnimationFrame(processFrame);
-      }).catch(() => {
-        toast.error('Failed to load MediaPipe model');
+      }).catch((err) => {
+        toast.error(err instanceof Error ? err.message : 'Failed to load MediaPipe model');
         setTrackingState(false);
       });
     } else {
