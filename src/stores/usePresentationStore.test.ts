@@ -8,12 +8,10 @@ describe('usePresentationStore', () => {
   });
 
   const mockFile: PresentationFile = {
-    id: '1',
     name: 'test.pdf',
-    url: 'blob:test',
-    type: 'application/pdf',
-    size: 1024,
     totalPages: 3,
+    fileSize: 1024,
+    loadedAt: 1,
   };
 
   it('initializes with default state', () => {

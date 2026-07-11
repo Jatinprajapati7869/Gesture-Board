@@ -1,5 +1,9 @@
 # GestureBoard
 
+![Hand Gesture Demo](assets/demo.gif)
+
+![CI](https://github.com/Jatinprajapati7869/Gesture-Board/actions/workflows/ci.yml/badge.svg)
+
 GestureBoard is a browser-based presentation tool that uses computer vision to track hand movements, allowing users to control slides, point, and draw annotations without physical input devices.
 
 ## Features
