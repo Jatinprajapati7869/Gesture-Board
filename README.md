@@ -1,64 +1,74 @@
 # GestureBoard
 
-![Hand Gesture Demo](assets/demo.gif)
-
 ![CI](https://github.com/Jatinprajapati7869/Gesture-Board/actions/workflows/ci.yml/badge.svg)
 
-GestureBoard is a browser-based presentation tool that uses computer vision to track hand movements, allowing users to control slides, point, and draw annotations without physical input devices.
+GestureBoard is a browser-based presentation tool that uses computer vision to track hand movements, control slides, and draw annotations without physical input devices.
+
+## Demo
+
+The app works with a camera, but it also includes a no-camera demo path. If permissions are blocked, use the demo controls in Presentation Mode to navigate slides, switch tools, and clear annotations.
 
 ## Features
 
-- **Local Processing**: Hand tracking runs entirely client-side via Google MediaPipe and WebAssembly. No image data is sent to external servers.
-- **PDF Rendering**: High-performance document rendering utilizing Mozilla's PDF.js and Web Workers to maintain a responsive main thread.
-- **Gesture Navigation**: Navigate slides using distinct hand gestures (e.g., Peace sign to advance, Open Palm to go back).
-- **Digital Ink**: Pinch gestures enable real-time canvas drawing over presentation slides. Annotations are persisted per-slide.
-- **Laser Pointer**: Extending the index finger tracks and renders a smooth cursor on the active slide.
-- **Calibration Flow**: Built-in onboarding sequence to verify camera input and confirm gesture recognition thresholds before presenting.
+- Local processing: hand tracking runs entirely client-side through MediaPipe and WebAssembly.
+- PDF rendering: PDF.js loads and renders slides on a responsive canvas.
+- Gesture navigation: Peace advances slides, Open Palm goes back.
+- Digital ink: pinch gestures draw directly on the slide.
+- Laser pointer: index finger tracking renders a smooth cursor.
+- Calibration flow: onboarding verifies the camera path before presenting.
+- Demo fallback: presentation controls remain usable without camera access.
+
+## Engineering Highlights
+
+- Real-time MediaPipe tracking with a decoupled heuristics layer.
+- Presentation, tracking, and annotation stores are isolated with Zustand.
+- Gesture debounce logic prevents accidental double navigation.
+- Annotation persistence is maintained per slide.
+- Fallback demo controls keep the app usable in meetings without camera approval.
+- Tests cover stores, gesture recognition, integration logic, and UI flows.
+- CI runs lint, test, and build checks.
 
 ## Architecture Overview
 
-The system is decoupled into three primary modules:
-1. **Tracking Engine (`/features/hand-tracking`)**: Polls the webcam via `requestAnimationFrame` and processes frames through MediaPipe to extract 3D hand landmarks. A heuristics layer (`gesture-recognition.ts`) maps coordinate thresholds to discrete gesture states.
-2. **Presentation Engine (`/features/presentation`)**: Manages the PDF document state and renders the active slide onto a scalable canvas.
-3. **Integration Layer (`useGestureIntegration.ts`)**: Bridges the tracking and presentation modules. It handles coordinate normalization, debounce logic for navigation, and dispatches actions to the global state manager.
-
-State management is handled by Zustand, providing isolated stores for gestures, annotations, and user settings.
+1. Tracking engine: webcam frames are processed through MediaPipe to extract 3D hand landmarks.
+2. Presentation engine: PDF.js renders the active slide to canvas.
+3. Integration layer: gesture events drive slide navigation and annotation dispatch.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18.x or later
-- A modern web browser with camera permissions enabled
+- Node.js 18 or later
+- npm
 
-### Installation
+### Install
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Jatinprajapati7869/Gesture-Board.git
-   cd Gesture-Board
-   ```
+```powershell
+npm install
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Run
 
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+```powershell
+npm run dev
+```
 
-The application will be available at `http://localhost:5173`. 
+Open `http://localhost:5173` in your browser.
 
-## Development Stack
+## Verification
 
-- **Core**: React 19, TypeScript, Vite
-- **Computer Vision**: @mediapipe/tasks-vision
-- **Document Processing**: pdfjs-dist
-- **State Management**: Zustand
-- **Styling**: Tailwind CSS v4
+```powershell
+npm run lint
+npm test -- --run
+npm run build
+```
+
+## Known Limitations
+
+- PDF.js and MediaPipe add bundle weight, so the production build emits chunk-size warnings.
+- Camera tracking depends on good lighting and a visible hand.
+- Single-hand tracking is the supported path.
 
 ## License
 
-MIT License
+MIT License. See [LICENSE](LICENSE).

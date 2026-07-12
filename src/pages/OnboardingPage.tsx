@@ -23,7 +23,6 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
   
   const isCameraActive = trackingResult !== null;
 
-  // 1. Listen for the correct gesture and mark step as complete
   useEffect(() => {
     if (!isCameraActive || currentStepIndex >= TUTORIAL_STEPS.length) return;
     const currentStepId = TUTORIAL_STEPS[currentStepIndex].id;
@@ -41,7 +40,6 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
     }
   }, [currentGesture.type, currentGesture.confidence, currentGesture.timestamp, isCameraActive, currentStepIndex, completedSteps]);
 
-  // 2. Once a step is marked complete, wait 1 second then advance
   useEffect(() => {
     if (currentStepIndex >= TUTORIAL_STEPS.length) return;
     const currentStepId = TUTORIAL_STEPS[currentStepIndex].id;
@@ -58,17 +56,15 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
   const allCompleted = completedSteps.size === TUTORIAL_STEPS.length;
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-8 bg-surface-primary">
-      <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        
-        {/* Left Side: Instructions */}
+    <div className="flex flex-1 flex-col items-center justify-center bg-surface-primary p-8">
+      <div className="grid w-full max-w-5xl grid-cols-1 items-start gap-8 lg:grid-cols-2">
         <div className="space-y-8">
           <div>
             <Badge variant="default" className="mb-4">Calibration & Training</Badge>
-            <h1 className="text-4xl font-bold text-text-primary tracking-tight">
+            <h1 className="text-4xl font-bold tracking-tight text-text-primary">
               Let's test your setup
             </h1>
-            <p className="text-lg text-text-secondary mt-4">
+            <p className="mt-4 text-lg text-text-secondary">
               Before you start your presentation, we need to make sure the AI can clearly see your hands and that you know the controls.
             </p>
           </div>
@@ -83,18 +79,18 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
                 <Card 
                   key={step.id} 
                   className={cn(
-                    "transition-all duration-300 relative overflow-hidden",
-                    isActive ? "ring-2 ring-interactive-primary shadow-interactive-primary/20" : "",
-                    isLocked ? "opacity-50 grayscale" : "",
-                    isCompleted ? "bg-feedback-success/10 border-feedback-success/20" : ""
+                    'relative overflow-hidden transition-all duration-300',
+                    isActive ? 'ring-2 ring-interactive-primary shadow-interactive-primary/20' : '',
+                    isLocked ? 'opacity-50 grayscale' : '',
+                    isCompleted ? 'border-feedback-success/20 bg-feedback-success/10' : ''
                   )}
                 >
                   <div className="flex items-start gap-4 p-4">
                     <div className="mt-1">
                       {isCompleted ? (
-                        <CheckCircle2 className="w-6 h-6 text-feedback-success" />
+                        <CheckCircle2 className="h-6 w-6 text-feedback-success" />
                       ) : (
-                        <Circle className={cn("w-6 h-6", isActive ? "text-interactive-primary animate-pulse" : "text-text-tertiary")} />
+                        <Circle className={cn('h-6 w-6', isActive ? 'animate-pulse text-interactive-primary' : 'text-text-tertiary')} />
                       )}
                     </div>
                     <div>
@@ -102,16 +98,14 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
                         {step.title}
                         {isActive && <Badge variant="secondary" className="ml-3 text-xs">Waiting for gesture...</Badge>}
                       </h3>
-                      <p className="text-sm text-text-secondary mt-1">
+                      <p className="mt-1 text-sm text-text-secondary">
                         {step.description}
                       </p>
                     </div>
                   </div>
-                  
-                  {/* Progress indicator bar at bottom */}
                   {isActive && (
-                    <div className="absolute bottom-0 left-0 h-1 bg-interactive-primary/20 w-full overflow-hidden">
-                      <div className="h-full bg-interactive-primary w-1/2 animate-[ping-pong_2s_ease-in-out_infinite]" />
+                    <div className="absolute bottom-0 left-0 h-1 w-full overflow-hidden bg-interactive-primary/20">
+                      <div className="h-full w-1/2 animate-[ping-pong_2s_ease-in-out_infinite] bg-interactive-primary" />
                     </div>
                   )}
                 </Card>
@@ -120,36 +114,37 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
           </div>
 
           {allCompleted && (
-            <div className="pt-6 animate-in slide-in-from-bottom-4 fade-in duration-700">
+            <div className="animate-in fade-in slide-in-from-bottom-4 pt-6 duration-700">
               <Button 
                 variant="primary" 
                 size="lg" 
-                className="w-full text-lg h-14"
+                className="h-14 w-full text-lg"
                 onClick={onComplete}
               >
                 Start Presenting
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
           )}
         </div>
 
-        {/* Right Side: Camera Preview */}
-        <div className="space-y-6 sticky top-8">
-          <Card className="overflow-hidden bg-black aspect-video relative border-2 border-border-default shadow-2xl p-0">
+        <div className="sticky top-8 space-y-6">
+          <Card className="relative aspect-video overflow-hidden rounded-xl border-2 border-border-default bg-black p-0 shadow-2xl">
             {!isCameraActive && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-surface-primary p-6 text-center">
-                <Camera className="w-12 h-12 text-interactive-primary mb-4" />
-                <h3 className="text-xl font-semibold text-text-primary mb-2">Camera Required</h3>
-                <p className="text-text-secondary mb-6 max-w-sm">
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface-primary p-6 text-center">
+                <Camera className="mb-4 h-12 w-12 text-interactive-primary" />
+                <h3 className="mb-2 text-xl font-semibold text-text-primary">Camera Required</h3>
+                <p className="mb-6 max-w-sm text-text-secondary">
                   Please allow camera access and wait for the AI model to initialize.
                 </p>
+                <Button variant="primary" onClick={onComplete}>
+                  Continue without camera
+                </Button>
               </div>
             )}
-            <WebcamPreview className="w-full h-full object-cover" />
-            
+            <WebcamPreview className="h-full w-full object-cover" />
             {isCameraActive && (
-              <div className="absolute top-4 left-4 z-10 flex gap-2">
+              <div className="absolute left-4 top-4 z-10 flex gap-2">
                 <Badge variant="default" className="bg-black/60 backdrop-blur-md">
                   Camera Active
                 </Badge>
@@ -162,14 +157,13 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
             )}
           </Card>
           
-          <div className="bg-interactive-primary/10 border border-interactive-primary/20 rounded-xl p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-interactive-primary shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 rounded-xl border border-interactive-primary/20 bg-interactive-primary/10 p-4">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-interactive-primary" />
             <p className="text-sm text-text-secondary">
               <strong className="text-text-primary">Pro Tip:</strong> Make sure your hand is well-lit and clearly visible in the camera frame. Gestures are recognized best when your hand is about 2-3 feet from the lens.
             </p>
           </div>
         </div>
-
       </div>
     </div>
   );
